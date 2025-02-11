@@ -1,1 +1,93 @@
-/* You can add global styles to this file, and also import other style files */
+// 1️⃣ Reset & Box Sizing
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// 2️⃣ Allgemeine Variablen für Farben & Schriftarten
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$background-color: #f8f9fa;
+$text-color: #333;
+$font-family: 'Arial', sans-serif;
+
+$black-color: #141414;
+$red-color: #ff002e;
+$blue-color: #2e3edf;
+$white-color: #ffffff;
+$gradient-color: linear-gradient(45deg, #fcfcfc, #656565);
+
+body {
+  font-family: $font-family;
+  color: $text-color;
+  background-color: $background-color;
+  line-height: 1.6;
+}
+
+// 3️⃣ Überschriften & Typografie
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+// 4️⃣ Links
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+// 5️⃣ Container für bessere Layouts
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+// 6️⃣ Buttons
+button {
+  background: $primary-color;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+// 7️⃣ Flex & Grid Helferklassen
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.hide {
+  display: none;
+}
+
+// 8️⃣ Scrollbar Styling (Optional)
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $secondary-color;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: $background-color;
+}
