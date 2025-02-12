@@ -42,6 +42,10 @@ a {
   color: $primary-color;
   text-decoration: none;
   transition: color 0.3s;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 // 5️⃣ Container für bessere Layouts

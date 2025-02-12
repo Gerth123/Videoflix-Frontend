@@ -3,6 +3,8 @@ import { DashboardComponent } from './authentication/dashboard/dashboard.compone
 import { LogInComponent } from './authentication/log-in/log-in.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
+import { ImprintComponent } from './legal-information/imprint/imprint.component';
+import { PrivacyPolicyComponent } from './legal-information/privacy-policy/privacy-policy.component';
 
 
 export const routes: Routes = [
@@ -27,6 +29,6 @@ export const routes: Routes = [
     //   ],
     // },
     
-    // { path: 'imprint', component: ImprintComponent },
-    // { path: 'privacy-policy', component: PrivacyPolicyComponent },
+    { path: 'imprint', component: ImprintComponent },
+    { path: 'privacy-policy', component: PrivacyPolicyComponent },
   ];
