@@ -5,6 +5,7 @@ import { ForgotPasswordComponent } from './authentication/forgot-password/forgot
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { ImprintComponent } from './legal-information/imprint/imprint.component';
 import { PrivacyPolicyComponent } from './legal-information/privacy-policy/privacy-policy.component';
+import { VideoOfferComponent } from './video/video-offer/video-offer.component';
 
 
 export const routes: Routes = [
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'forgot-password', component: ForgotPasswordComponent }, 
     // { path: 'new-password', component: NewPasswordComponent }, 
     { path: 'sign-up', component: SignUpComponent },
+    { path: 'video-offer', component: VideoOfferComponent },
   
     // {
     //   path: 'main/:uid',

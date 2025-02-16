@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoutingService {
+  emailFromDashboard: string = '';
 
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
-
-   /**
+  /**
    * Navigates to the chosen route
-   * 
+   *
    * @param route The route to navigate to
    */
-   navigateTo(route: string): void {
+  navigateTo(route: string): void {
     this.router.navigate([route]);
   }
 }

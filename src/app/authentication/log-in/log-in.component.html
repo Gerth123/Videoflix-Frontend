@@ -1,4 +1,26 @@
 <section>
-    <app-header></app-header>
-    <app-footer></app-footer>
+  <app-header></app-header>
+  <div class="log-in-container">
+    <div class="log-in">
+      <h2>Log in</h2>
+      <form [formGroup]="logInForm" (ngSubmit)="onSubmit()">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Email Address"
+        />
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+        />
+        <div class="remember-me">
+          <input type="checkbox" formControlName="rememberMe" />
+          <label for="rememberMe">Remember me</label>
+        </div>
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+  </div>
+  <app-footer></app-footer>
 </section>

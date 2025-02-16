@@ -5,9 +5,10 @@
     <span>
         Enter your email to create or restart your subscription.
     </span>
-    <form onsubmit="return false">
-        <input type="text" placeholder="Email Address">
-        <button>Sign Up ></button>
+    <form [formGroup]="dashboardForm" (ngSubmit)="onSubmit()">
+      <input type="email" formControlName="email" placeholder="Email Address">
+      <button type="submit">Sign Up ></button>
+      <!-- [disabled]="dashboardForm.invalid" -->
     </form>
   </div>
   <app-footer></app-footer>
