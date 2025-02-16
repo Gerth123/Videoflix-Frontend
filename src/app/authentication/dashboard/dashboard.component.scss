@@ -1,7 +1,69 @@
 section {
-  background-image: url("./../../../assets/img/dashboard.jpg");
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), 
+    url("../../../assets/img/dashboard.jpg");
   background-size: cover;
   background-position: center;
   height: 100vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.dashboard-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 32px;
+}
+
+h2 {
+  font-size: 48px;
+  color: var(--white-color);
+  padding: 0;
+}
+
+span {
+  color: var(--white-color);
+  font-size: 18px;
+}
+
+form {
+  display: flex;
+  gap: 16px;
+}
+
+input {
+  padding: 12px 24px;
+  border-radius: 40px;
+  gap: 10px;
+  border: 1px solid var(--white-color);
+  color: var(--white-color);
+  background-color: transparent;
+  min-width: 360px;
+
+  &::placeholder {
+    color: var(--white-color);
+  }
+}
+
+button {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 40px;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  gap: 4px;
+
+  &:hover {
+    filter: brightness(1.2);
+    cursor: pointer;
+  }
 }

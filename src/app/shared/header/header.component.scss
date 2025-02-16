@@ -1,0 +1,30 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4svh 5vw;
+}
+
+.logo {
+    img {
+        height: 32px;
+    }
+}
+
+.log-in {
+    span {
+      color: var(--white-color);
+      background-color: var(--blue-color);
+      border-radius: 40px;
+      gap: 10px;
+      padding: 12px 24px;
+      transition: all 0.3s ease; 
+  
+      &:hover {
+        cursor: pointer;
+        padding: 12px 26px 12px 26px;
+        filter: brightness(1.2); 
+      }
+    }
+  }
+  

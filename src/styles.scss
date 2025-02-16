@@ -14,11 +14,13 @@ $background-color: #f8f9fa;
 $text-color: #333;
 $font-family: 'Arial', sans-serif;
 
-$black-color: #141414;
-$red-color: #ff002e;
-$blue-color: #2e3edf;
-$white-color: #ffffff;
-$gradient-color: linear-gradient(45deg, #fcfcfc, #656565);
+:root {
+  --black-color: #141414;
+  --red-color: #ff002e;
+  --blue-color: #2e3edf;
+  --white-color: #ffffff;
+  --gradient-color: linear-gradient(45deg, #fcfcfc, #656565);
+}
 
 body {
   font-family: $font-family;
@@ -27,17 +29,10 @@ body {
   line-height: 1.6;
 }
 
-// 3️⃣ Überschriften & Typografie
-h1, h2, h3, h4, h5, h6 {
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
 p {
   margin-bottom: 1rem;
 }
 
-// 4️⃣ Links
 a {
   color: $primary-color;
   text-decoration: none;
