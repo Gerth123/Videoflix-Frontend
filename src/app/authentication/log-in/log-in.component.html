@@ -8,18 +8,29 @@
           type="email"
           formControlName="email"
           placeholder="Email Address"
+          class="email"
         />
         <input
           type="password"
           formControlName="password"
           placeholder="Password"
+          class="password"
         />
         <div class="remember-me">
-          <input type="checkbox" formControlName="rememberMe" />
+          <input
+            type="checkbox"
+            formControlName="rememberMe"
+            class="checkbox"
+          />
           <label for="rememberMe">Remember me</label>
         </div>
-        <button type="submit">Log In</button>
+        <button type="submit" class="log-in-button">Log In</button>
       </form>
+      <span class="forgot-password">Forgot password?</span>
+      <div class="sign-up-container">
+        <span class="new-to-videoflix">New to Videoflix?</span>
+        <span class="sign-up-now">Sign Up now</span>
+      </div>
     </div>
   </div>
   <app-footer></app-footer>
