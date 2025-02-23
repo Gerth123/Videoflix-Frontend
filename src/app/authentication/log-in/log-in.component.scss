@@ -55,8 +55,7 @@ form {
   border-radius: 12px;
   font-size: 16px;
   gap: 10px;
-  min-width: 35vw;
-  max-width: 408px;
+  width: 408px;
   color: var(--blue-color);
 }
 
@@ -115,6 +114,7 @@ form {
   align-self: center;
   font-weight: 700;
   font-size: 18px;
+  margin-top: -10px;
 
   &:hover {
     filter: brightness(1.2);
