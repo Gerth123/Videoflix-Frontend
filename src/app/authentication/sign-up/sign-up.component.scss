@@ -2,7 +2,85 @@ section {
     background-image: url("../../../assets/img/sign_up.jpg");
     background-size: cover;
     background-position: center;
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     width: 100%;
   }
+  
+  .log-in-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+  }
+  
+  .log-in {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white-color);
+    border-radius: 48px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    // padding: 43px 56px;
+    padding: 28px 40px;
+  }
+  
+  h2 {
+    font-size: 48px;
+    color: var(--blue-color);
+    margin: 0;
+    font-weight: 700;
+    padding-bottom: 16px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 16px;
+  }
+  
+  .email {
+    padding-bottom: 16px;
+  }
+  
+  .password,
+  .email {
+    padding: 12px 24px;
+    border: 1px solid var(--blue-color);
+    border-radius: 12px;
+    font-size: 16px;
+    gap: 10px;
+    width: 408px;
+    color: var(--blue-color);
+  }
+  
+  .password::placeholder,
+  .email::placeholder {
+    color: var(--blue-color); 
+    opacity: 0.85;
+  }
+  
+  .log-in-button {
+    padding: 12px 24px;
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: center;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: -10px;
+  
+    &:hover {
+      filter: brightness(1.2);
+    }
+  }
+  
   

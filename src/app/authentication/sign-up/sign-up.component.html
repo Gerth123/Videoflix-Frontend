@@ -1,4 +1,30 @@
 <section>
     <app-header></app-header>
+    <div class="log-in-container">
+        <div class="log-in">
+          <h2>Sign Up</h2>
+          <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Email Address"
+              class="email"
+            />
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Enter a password"
+              class="password"
+            />
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Confirm Password"
+              class="password"
+            />
+            <button type="submit" class="log-in-button">Get Started</button>
+          </form>
+        </div>
+      </div>
     <app-footer></app-footer>
 </section>
