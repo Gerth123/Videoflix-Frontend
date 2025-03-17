@@ -31,6 +31,12 @@ export class LogInComponent {
     });
   }
 
+  ngOnInit(): void {
+    if (this.routingService.emailFromDashboard) {
+      this.logInForm.get('email')?.setValue(this.routingService.emailFromDashboard);
+    }
+  }
+
   onSubmit() {
     if (this.logInForm.valid) {
       this.routingService.navigateTo('/video-offer');

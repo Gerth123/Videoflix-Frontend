@@ -7,7 +7,7 @@
     </span>
     <form [formGroup]="dashboardForm" (ngSubmit)="onSubmit()">
       <input type="email" formControlName="email" placeholder="Email Address">
-      <button type="submit">Sign Up ></button>
+      <button type="submit" [disabled]="dashboardForm.invalid" [ngClass]="{'disabled-button': dashboardForm.invalid, 'active-button': dashboardForm.valid}">Sign Up ></button>
       <!-- [disabled]="dashboardForm.invalid" -->
     </form>
   </div>

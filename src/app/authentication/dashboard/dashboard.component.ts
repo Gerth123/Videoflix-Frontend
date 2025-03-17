@@ -4,10 +4,11 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RoutingService } from '../../shared/services/routing-service/routing.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule, NgClass],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

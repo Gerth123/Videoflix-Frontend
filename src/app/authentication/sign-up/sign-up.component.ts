@@ -4,6 +4,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RoutingService } from '../../shared/services/routing-service/routing.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
+import { ApiService } from '../../shared/services/api-service/api.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +18,8 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private routingService: RoutingService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private apiService: ApiService
   ) {
     this.signUpForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -26,9 +28,17 @@ export class SignUpComponent {
     });
   }
 
+  ngOnInit(): void {
+    if (this.routingService.emailFromDashboard) {
+      this.signUpForm.get('email')?.setValue(this.routingService.emailFromDashboard);
+    }
+  }
+  
+
   onSubmit() {
     if (this.signUpForm.valid) {
       this.toastService.show('Sign up successful!' + this.signUpForm.value.email + this.signUpForm.value.password);
+      this.apiService.postData('registration/', this.signUpForm.value).subscribe();
       setTimeout(() => this.routingService.navigateTo('/log-in'), 20000);
     }
   }

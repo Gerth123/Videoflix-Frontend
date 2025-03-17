@@ -90,3 +90,11 @@ button {
 ::-webkit-scrollbar-track {
   background: $background-color;
 }
+
+.disabled-button {
+  background-color: gray !important;
+  cursor: not-allowed !important;
+  &:hover {
+    filter: brightness(1) !important;
+  }
+}
