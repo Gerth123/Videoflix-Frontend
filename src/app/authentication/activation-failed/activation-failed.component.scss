@@ -1,19 +1,22 @@
 .container {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  button {
-    padding: 12px 24px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background: darkred;
-  }
-  
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100svh;
+}
+
+button {
+  padding: 12px 24px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: darkred;
+}
