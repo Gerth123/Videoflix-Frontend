@@ -1,0 +1,19 @@
+<div class="toast-container">
+  <div
+    *ngFor="let toast of toastService.toasts"
+    class="toast-message"
+    [ngClass]="'bg-' + toast.type"
+    [@slideInOut]="toast.state"
+  >
+    <div class="toast-left"></div>
+    <div class="toast-content">
+      <img src="../../../assets/icons/toast_exclamation_point.svg" alt="Exclamation mark">
+      <p>{{ toast.message }}</p>
+    </div>
+    <div class="toast-actions">
+      <button *ngIf="toast.buttonText" class="toast-btn">{{ toast?.buttonText }}</button>
+      <div class="toast-line"></div>
+      <span class="close-btn" (click)="hideToast(toast)">✖</span>
+    </div>
+  </div>
+</div>

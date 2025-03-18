@@ -37,7 +37,7 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.signUpForm.valid) {
-      this.toastService.show('Sign up successful!' + this.signUpForm.value.email + this.signUpForm.value.password);
+      this.toastService.show('Erfolgreich gespeichert!', 'success');
       this.apiService.postData('registration/', this.signUpForm.value).subscribe();
       setTimeout(() => this.routingService.navigateTo('/log-in'), 20000);
     }

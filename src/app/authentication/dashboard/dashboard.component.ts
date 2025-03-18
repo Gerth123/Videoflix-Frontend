@@ -26,11 +26,13 @@ export class DashboardComponent {
     if (this.dashboardForm.valid && !emailExists) {
       this.routingService.navigateTo('/sign-up');
       this.routingService.emailFromDashboard = this.dashboardForm.value.email;
+      this.toastService.show('Zuerst registrieren', 'info');
     } else if (this.dashboardForm.valid && emailExists) {
       this.routingService.navigateTo('/log-in');
       this.routingService.emailFromDashboard = this.dashboardForm.value.email;
+      this.toastService.show('Zuerst anmelden', 'info');
     } else {
-      this.toastService.show('Please enter a valid email address.');
+      this.toastService.show('Bitte eine gültige E-Mail Adresse eingeben!', 'error', 'button');
     }
   }
 }
