@@ -36,10 +36,14 @@ export class SignUpComponent {
   
 
   onSubmit() {
-    if (this.signUpForm.valid) {
+   //TODO: Emailüberprüfung über die Daten der API noch hinzufügen!
+    let emailExists: boolean = false;
+    if (this.signUpForm.valid && this.signUpForm.value.password === this.signUpForm.value.confirmPassword && !emailExists) {
       this.toastService.show('Erfolgreich gespeichert!', 'success');
       this.apiService.postData('registration/', this.signUpForm.value).subscribe();
       setTimeout(() => this.routingService.navigateTo('/log-in'), 20000);
+    } else if (this.signUpForm.valid && this.signUpForm.value.password === this.signUpForm.value.confirmPassword && emailExists) {
+      this.toastService.show('Bitte überprüfe deine Eingaben und versuche es erneut.', 'error');
     }
   }
 }

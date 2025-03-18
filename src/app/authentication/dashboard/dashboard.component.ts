@@ -32,7 +32,7 @@ export class DashboardComponent {
       this.routingService.emailFromDashboard = this.dashboardForm.value.email;
       this.toastService.show('Zuerst anmelden', 'info');
     } else {
-      this.toastService.show('Bitte eine gültige E-Mail Adresse eingeben!', 'error', 'button');
+      this.toastService.show('Bitte eine gültige E-Mail Adresse eingeben!', 'error');
     }
   }
 }
