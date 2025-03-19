@@ -26,10 +26,10 @@
         </div>
         <button type="submit" class="log-in-button">Log In</button>
       </form>
-      <span class="forgot-password">Forgot password?</span>
+      <span class="forgot-password" (click)="navigateTo('/forgot-password')">Forgot password?</span>
       <div class="sign-up-container">
         <span class="new-to-videoflix">New to Videoflix?</span>
-        <span class="sign-up-now">Sign Up now</span>
+        <span class="sign-up-now" (click)="navigateTo('/sign-up')">Sign Up now</span>
       </div>
     </div>
   </div>

@@ -10,7 +10,7 @@ export class ApiConfigService {
   readonly LOGIN_URL = 'login/';
   readonly REGISTER_URL = 'registration/';
   readonly PROFILE_URL = 'profile/';
-  readonly BASE_INFO_URL = 'base-info/';
+  readonly PROFILES_URL = 'profiles/';
 
   readonly PAGE_SIZE = 6;
 

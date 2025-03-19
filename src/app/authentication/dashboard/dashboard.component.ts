@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RoutingService } from '../../shared/services/routing-service/routing.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { NgClass } from '@angular/common';
+import { ApiService } from '../../shared/services/api-service/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,14 +16,14 @@ import { NgClass } from '@angular/common';
 export class DashboardComponent {
   dashboardForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private routingService: RoutingService, private toastService: ToastService) {
+  constructor(private fb: FormBuilder, private routingService: RoutingService, private toastService: ToastService, private apiService: ApiService) {
     this.dashboardForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  onSubmit() {
-    let emailExists: boolean = false;
+  async onSubmit() {
+    const emailExists: boolean = await this.apiService.checkEmailExists(this.dashboardForm.value.email);
     if (this.dashboardForm.valid && !emailExists) {
       this.routingService.navigateTo('/sign-up');
       this.routingService.emailFromDashboard = this.dashboardForm.value.email;
