@@ -12,16 +12,18 @@
         />
         <input
           type="password"
+          *ngIf="showPasswordField"
           formControlName="password"
           placeholder="Password"
           class="password"
         />
+        <div *ngIf="!showPasswordField"></div>
         <div class="remember-me">
           <input
             type="checkbox"
             formControlName="rememberMe"
             class="checkbox"
-          />
+            (change)="onCheckboxChange()"          />
           <label for="rememberMe">Remember me</label>
         </div>
         <button type="submit" class="log-in-button">Log In</button>

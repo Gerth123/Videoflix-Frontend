@@ -18,7 +18,7 @@ export class HeaderComponent {
   navigateTo(route: string): void {
     this.routingService.navigateTo(route);
 
-    if (route === '') {
+    if (route === 'log-in') {
       localStorage.clear();
       this.toastService.show('Du wurdest erfolgreich abgemeldet', 'success');
     }

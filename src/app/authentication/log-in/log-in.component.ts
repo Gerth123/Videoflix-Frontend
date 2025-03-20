@@ -11,15 +11,18 @@ import { RoutingService } from '../../shared/services/routing-service/routing.se
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { ApiService } from '../../shared/services/api-service/api.service';
 import { ApiConfigService } from '../../shared/services/api-config-service/api-config.service';
+import { NgIf } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-log-in',
-  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule, NgIf],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss',
 })
 export class LogInComponent {
   logInForm: FormGroup;
+  showPasswordField: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -36,42 +39,88 @@ export class LogInComponent {
   }
 
   ngOnInit(): void {
+    if (!this.logInForm) return; // Falls das Formular nicht existiert, nichts tun
+
     if (this.routingService.emailFromDashboard) {
       this.logInForm
         .get('email')
         ?.setValue(this.routingService.emailFromDashboard);
     }
+
+    const rememberMe = localStorage.getItem('remember-me') === 'true';
+    const email = localStorage.getItem('auth-user');
+    if (rememberMe && email) {
+      this.logInForm.get('rememberMe')?.setValue(true);
+      this.logInForm
+        .get('email')
+        ?.setValue(localStorage.getItem('auth-user') || '');
+      this.showPasswordField = false;
+    }
   }
 
-  onSubmit() {
-    if (this.logInForm.valid) {
+  async onSubmit() {
+    const authToken = localStorage.getItem('auth-token');
+    if (
+      this.logInForm.valid ||
+      (this.logInForm.value.rememberMe && authToken)
+    ) {
       const { rememberMe, ...loginData } = this.logInForm.value;
-
-      this.apiService
-        .postDataWithoutToken(this.apiConfigService.LOGIN_URL, loginData)
-        .subscribe({
-          next: (response) => {
-            if (rememberMe) {
-              this.apiService.setAuthCredentials(
-                response.token,
-                response.user_id,
-                response.email
-              );
-            }
-            if (response.is_active === true) {
+      if (authToken) {
+        try {
+          let filteredLoginData: any = { email: loginData.email };
+          let response = await firstValueFrom(
+            this.apiService.postData(this.apiConfigService.LOGIN_URL, filteredLoginData)
+          );
+          if (response.is_active === true) {
               this.toastService.show('Erfolgreich angemeldet!', 'success');
               this.routingService.navigateTo('/video-offer');
             } else {
               this.toastService.show('Bitte aktiviere dein Konto!', 'error');
             }
-          },
-          error: (error) => {
-            this.toastService.show(
-              'Ungültige Kombination aus E-Mail und Passwort.',
-              'error'
-            );
-          },
-        });
+        } catch (error) {
+          console.error('Error during API call:', error);
+        }
+      } else {
+        this.apiService
+          .postData(this.apiConfigService.LOGIN_URL, loginData)
+          .subscribe({
+            next: (response) => {
+              this.apiService.setAuthCredentials(
+                response.token,
+                response.user_id,
+                response.email,
+                rememberMe
+              );
+              if (response.is_active === true) {
+                this.toastService.show('Erfolgreich angemeldet!', 'success');
+                this.routingService.navigateTo('/video-offer');
+              } else {
+                this.toastService.show('Bitte aktiviere dein Konto!', 'error');
+              }
+            },
+            error: (error) => {
+              this.toastService.show(
+                'Ungültige Kombination aus E-Mail und Passwort.',
+                'error'
+              );
+            },
+          });
+      }
+    }
+  }
+
+  onCheckboxChange() {
+    const rememberMe = this.logInForm.get('rememberMe')?.value;
+    const email = localStorage.getItem('auth-user');
+    const passwordControl = this.logInForm.get('password');
+    if (rememberMe && email) {
+      localStorage.setItem('remember-me', 'true');
+      this.showPasswordField = false;
+      passwordControl?.clearValidators();
+    } else {
+      localStorage.removeItem('remember-me');
+      this.showPasswordField = true;
+      passwordControl?.setValidators(Validators.required);
     }
   }
 

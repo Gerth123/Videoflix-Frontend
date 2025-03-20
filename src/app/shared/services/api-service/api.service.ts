@@ -11,10 +11,16 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   // Authentifizierungsdaten speichern
-  setAuthCredentials(token: string, userId: string, email: string) {
+  setAuthCredentials(
+    token: string,
+    userId: string,
+    email: string,
+    rememberMe: boolean
+  ) {
     localStorage.setItem('auth-token', token);
     localStorage.setItem('auth-user-id', userId);
     localStorage.setItem('auth-user', email);
+    localStorage.setItem('remember-me', rememberMe.toString());
   }
 
   // Authentifizierungsdaten entfernen
@@ -44,6 +50,7 @@ export class ApiService {
     if (token) {
       headers = headers.set('Authorization', `Token ${token}`);
     }
+    console.log(headers);
     return headers;
   }
 
@@ -64,12 +71,6 @@ export class ApiService {
       headers: this.createHeaders(),
     });
   }
-
-  postDataWithoutToken(endpoint: string, data: any): Observable<any> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post(`${this.API_BASE_URL}${endpoint}`, data, { headers });
-}
-
 
   // POST-Anfrage (JSON)
   postDataWJSON(endpoint: string, data: any): Observable<any> {
