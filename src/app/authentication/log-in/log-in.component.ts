@@ -58,7 +58,6 @@ export class LogInComponent {
                 response.email
               );
             }
-            console.log(response);
             if (response.is_active === true) {
               this.toastService.show('Erfolgreich angemeldet!', 'success');
               this.routingService.navigateTo('/video-offer');

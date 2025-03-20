@@ -20,7 +20,7 @@ export class VideoOfferComponent {
   }
 
   checkToken() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth-token');
     if (!token) {
       this.routingService.navigateTo('');
       setTimeout(() => this.toastService.show('Bitte anmelden oder registrieren', 'info'), 300);

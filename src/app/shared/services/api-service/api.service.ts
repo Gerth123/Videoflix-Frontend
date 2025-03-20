@@ -66,8 +66,6 @@ export class ApiService {
   }
 
   postDataWithoutToken(endpoint: string, data: any): Observable<any> {
-    console.log('Form Data:', data); // Überprüfen, ob E-Mail und Passwort richtig sind
-
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post(`${this.API_BASE_URL}${endpoint}`, data, { headers });
 }
@@ -75,7 +73,6 @@ export class ApiService {
 
   // POST-Anfrage (JSON)
   postDataWJSON(endpoint: string, data: any): Observable<any> {
-    console.log(data);
     const headers = this.createHeaders().set(
       'Content-Type',
       'application/json'

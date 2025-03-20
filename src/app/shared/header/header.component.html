@@ -1,8 +1,15 @@
 <header>
-    <div class="logo">
+    <div class="logo" *ngIf="!videoOfferRoute">
         <img src="assets/icons/logo.svg" alt="Logo">
     </div>
-    <div class="log-in">
+    <div class="logo" *ngIf="videoOfferRoute">
+        <img src="assets/icons/small_logo.svg" alt="">
+    </div>
+    <div class="log-in" *ngIf="!isLoggedIn">
         <span (click)="navigateTo('/log-in')">Log in</span>
+    </div>
+    <div class="log-out" *ngIf="isLoggedIn && videoOfferRoute">
+        <img src="assets/icons/log_out.svg" alt="Log out">
+        <span (click)="navigateTo('')">Log out</span>   
     </div>
 </header>
