@@ -92,7 +92,7 @@ button {
 }
 
 .disabled-button {
-  background-color: gray !important;
+  background-color: #2E3EDF80 !important;
   cursor: not-allowed !important;
   &:hover {
     filter: brightness(1) !important;
