@@ -9,12 +9,14 @@ import { VideoOfferComponent } from './video/video-offer/video-offer.component';
 import { AccountConfirmedComponent } from './authentication/account-confirmed/account-confirmed.component';
 import { ActivationFailedComponent } from './authentication/activation-failed/activation-failed.component';
 import { VideoPlayerComponent } from './video/video-player/video-player.component';
+import { ResetPasswordComponent } from './authentication/reset-password/reset-password.component';
 
 
 export const routes: Routes = [
     { path: '', component: DashboardComponent }, 
     { path: 'log-in', component: LogInComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent }, 
+    { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'account-confirmed', component: AccountConfirmedComponent }, 
     { path: 'activation-failed', component: ActivationFailedComponent }, 
     // { path: 'new-password', component: NewPasswordComponent }, 

@@ -50,7 +50,6 @@ export class ApiService {
     if (token) {
       headers = headers.set('Authorization', `Token ${token}`);
     }
-    console.log(headers);
     return headers;
   }
 
@@ -70,6 +69,10 @@ export class ApiService {
     return this.http.post(`${this.API_BASE_URL}${endpoint}`, data, {
       headers: this.createHeaders(),
     });
+  }
+
+  postDataWithoutToken(endpoint: string, data:any): Observable<any> {
+    return this.http.post(`${this.API_BASE_URL}${endpoint}`, data);
   }
 
   // POST-Anfrage (JSON)

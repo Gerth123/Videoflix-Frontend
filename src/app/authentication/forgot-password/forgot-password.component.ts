@@ -11,6 +11,7 @@ import { RoutingService } from '../../shared/services/routing-service/routing.se
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { ApiService } from '../../shared/services/api-service/api.service';
 import { NgClass } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgot-password',
@@ -19,18 +20,20 @@ import { NgClass } from '@angular/common';
   styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent {
-  resetPasswordForm: FormGroup;
+  forgotPasswordForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private routingService: RoutingService,
-    private toastService: ToastService,
-    private apiService: ApiService
-  ) {
-    this.resetPasswordForm = this.fb.group({
+  constructor(private fb: FormBuilder, private http: HttpClient, private toastService: ToastService, private apiService: ApiService) {
+    this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.apiService
+      .postData('auth/password-reset/', this.forgotPasswordForm.value)
+      .subscribe({
+        next: () => this.toastService.show('Falls die E-Mail existiert, wurde eine Nachricht gesendet.', 'info'),
+        error: () => this.toastService.show('Fehler beim Zurücksetzen des Passworts.', 'error'),
+      });
+  }
 }
