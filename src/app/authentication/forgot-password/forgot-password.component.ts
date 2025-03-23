@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RoutingService } from '../../shared/services/routing-service/routing.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { ApiService } from '../../shared/services/api-service/api.service';
 import { NgClass } from '@angular/common';
@@ -29,11 +28,13 @@ export class ForgotPasswordComponent {
   }
 
   onSubmit() {
-    this.apiService
-      .postData('auth/password-reset/', this.forgotPasswordForm.value)
-      .subscribe({
-        next: () => this.toastService.show('Falls die E-Mail existiert, wurde eine Nachricht gesendet.', 'info'),
-        error: () => this.toastService.show('Fehler beim Zurücksetzen des Passworts.', 'error'),
-      });
+    this.apiService.postData('auth/password-reset/', this.forgotPasswordForm.value).subscribe({
+      next: () => {
+        this.toastService.show('Falls die E-Mail existiert, wurde eine Nachricht gesendet.', 'info');
+        this.forgotPasswordForm.reset();
+      },
+      error: () => this.toastService.show('Fehler beim Zurücksetzen des Passworts.', 'error'),
+    });
   }
+  
 }

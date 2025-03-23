@@ -58,7 +58,7 @@ export class ResetPasswordComponent {
       .subscribe({
         next: () => {
           this.toastService.show('Passwort erfolgreich geändert.', 'success');
-          setTimeout(() => this.router.navigate(['/log-in']), 3000);
+          setTimeout(() => this.router.navigate(['/log-in']), 2000);
         },
         error: () => (this.toastService.show('Fehler beim Zurücksetzen des Passworts.', 'error')),
       });
