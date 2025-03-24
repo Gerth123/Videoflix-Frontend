@@ -22,7 +22,7 @@ export const routes: Routes = [
     // { path: 'new-password', component: NewPasswordComponent }, 
     { path: 'sign-up', component: SignUpComponent },
     { path: 'video-offer', component: VideoOfferComponent },
-    { path: 'video-player', component: VideoPlayerComponent },
+    { path: 'video-player/:videoId', component: VideoPlayerComponent },
     
   
     // {
