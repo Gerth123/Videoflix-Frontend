@@ -23,6 +23,9 @@ export const routes: Routes = [
     { path: 'sign-up', component: SignUpComponent },
     { path: 'video-offer', component: VideoOfferComponent },
     { path: 'video-player/:videoId', component: VideoPlayerComponent },
+    { path: 'video-player', component: VideoPlayerComponent },
+
+
     
   
     // {

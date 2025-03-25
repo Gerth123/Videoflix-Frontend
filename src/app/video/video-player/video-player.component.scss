@@ -1,10 +1,61 @@
 section {
     display: flex;
     flex-direction: column;
+    height: 100svh;
 }
 
-video {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
+.video-container {
+  position: relative;
+  max-height: 90svh;
+  width: 100vw;
+  margin: auto;
 }
+
+.video-element {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.controls-overlay {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.control-button img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  filter: brightness(0) invert(1);
+}
+
+.progress-bar {
+  flex: 1;
+  width: 100%;
+  appearance: none;
+  background: #fff;
+  height: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+

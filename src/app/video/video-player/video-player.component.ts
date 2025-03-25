@@ -1,54 +1,61 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
-import { ApiService } from '../../shared/services/api-service/api.service';
-import { ToastService } from '../../shared/services/toast-service/toast.service';
-import { RoutingService } from '../../shared/services/routing-service/routing.service';
-import Hls from 'hls.js';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-video-player',
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, NgIf, FormsModule],
   templateUrl: './video-player.component.html',
   styleUrl: './video-player.component.scss',
 })
 export class VideoPlayerComponent {
-  @ViewChild('videoPlayer') videoPlayerRef: ElementRef | undefined;
+  @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef;
+  isPlaying = false;
+  showControls = false;
+  duration = 0;
+  currentTime = 0;
 
-  private hls: Hls | undefined;
-
-  constructor(
-    private apiService: ApiService,
-    private toastService: ToastService,
-    private routingService: RoutingService
-  ) {}
-
-  ngOnInit(): void {
-    this.checkToken();
-
-    if (Hls.isSupported()) {
-      this.hls = new Hls();
-      this.hls.loadSource('https://path-to-your-hls-stream.m3u8');
-      this.hls.attachMedia(this.videoPlayerRef?.nativeElement);
-      
-      this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        console.log('HLS stream loaded successfully');
-      });
-    } else if (this.videoPlayerRef?.nativeElement.canPlayType('application/vnd.apple.mpegurl')) {
-      this.videoPlayerRef.nativeElement.src = 'https://path-to-your-hls-stream.m3u8';
+  togglePlayPause() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    if (video.paused) {
+      video.play();
+      this.isPlaying = true;
+    } else {
+      video.pause();
+      this.isPlaying = false;
     }
   }
 
-  checkToken() {
-    const token = localStorage.getItem('auth-token');
-    if (!token) {
-      this.routingService.navigateTo('');
-      setTimeout(() => this.toastService.show('Bitte anmelden oder registrieren', 'info'), 300);
-    }
+  updateTime() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    this.currentTime = video.currentTime;
   }
 
-  ngOnDestroy(): void {
-    if (this.hls) {
-      this.hls.destroy();
+  setDuration() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    this.duration = video.duration;
+  }
+
+  seekVideo() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    video.currentTime = this.currentTime;
+  }
+
+  rewind() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    video.currentTime -= 10; // 10 Sekunden zurück
+  }
+
+  fastForward() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    video.currentTime += 10; // 10 Sekunden vor
+  }
+
+  toggleFullscreen() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
     }
   }
 }

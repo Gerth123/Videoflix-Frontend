@@ -1,4 +1,59 @@
 <section>
-    <app-header [isLoggedIn]="true" [videoOfferRoute]="false"></app-header>
-    <video #videoPlayer controls></video>
+  <app-header [isLoggedIn]="true" [videoOfferRoute]="false"></app-header>
+  <div
+    class="video-container"
+    (mouseenter)="showControls = true"
+    (mouseleave)="showControls = false"
+  >
+    <video
+      #videoPlayer
+      class="video-element"
+      (timeupdate)="updateTime()"
+      (loadedmetadata)="setDuration()"
+    >
+      <source
+        src="https://www.w3schools.com/html/mov_bbb.mp4"
+        type="video/mp4"
+      />
+    </video>
+
+    <div class="controls-overlay" *ngIf="showControls">
+      <input
+        type="range"
+        class="progress-bar"
+        min="0"
+        [max]="duration"
+        [(ngModel)]="currentTime"
+        (change)="seekVideo()"
+      />
+      <div class="controls">
+        <div class="left-controls">
+          <button (click)="togglePlayPause()" class="control-button">
+            <img *ngIf="!isPlaying" src="assets/icons/play.svg" alt="Play" />
+            <img *ngIf="isPlaying" src="assets/icons/pause.svg" alt="Pause" />
+          </button>
+
+          <button (click)="rewind()" class="control-button">
+            <img src="assets/icons/rewind.svg" alt="Rewind" />
+          </button>
+
+          <button (click)="fastForward()" class="control-button">
+            <img src="assets/icons/forward.svg" alt="Forward" />
+          </button>
+
+          <button>
+            <img src="assets/icons/volume_up.svg" alt="Volume" />
+          </button>
+        </div>
+        <div class="right-controls">
+          <button>
+            <img src="assets/icons/speed.svg" alt="Speed" />
+          </button>
+          <button (click)="toggleFullscreen()" class="control-button">
+            <img src="assets/icons/fullscreen.svg" alt="Fullscreen" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
