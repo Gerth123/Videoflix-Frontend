@@ -11,10 +11,11 @@
       (timeupdate)="updateTime()"
       (loadedmetadata)="setDuration()"
     >
-      <source
+      <!-- <source
         src="https://www.w3schools.com/html/mov_bbb.mp4"
         type="video/mp4"
-      />
+      /> -->
+      <source src="http://127.0.0.1:8000/media/videos/originals/xy.mp4" type="video/mp4">
     </video>
 
     <div class="controls-overlay" *ngIf="showControls">
