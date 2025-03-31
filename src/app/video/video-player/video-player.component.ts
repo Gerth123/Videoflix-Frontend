@@ -2,6 +2,9 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NetworkService } from '../../shared/services/network-service/network.service';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../shared/services/api-service/api.service';
 
 @Component({
   selector: 'app-video-player',
@@ -15,6 +18,48 @@ export class VideoPlayerComponent {
   showControls = false;
   duration = 0;
   currentTime = 0;
+  videoQuality: string = 'auto';
+  videoSrc: string = '';
+  videoId: string = '';
+
+  constructor(
+    private networkService: NetworkService,
+    private route: ActivatedRoute,
+    private apiService: ApiService
+  ) {}
+
+  ngOnInit(): void {
+    this.videoQuality = this.networkService.getNetworkSpeed();
+    this.videoId = this.route.snapshot.paramMap.get('videoName') || '';
+    this.setVideoSrc();
+  }
+
+  setVideoSrc() {
+    const videoBaseUrl = 'videos/';
+    const videoDetail = videoBaseUrl + this.videoId;
+    const actualVideoQuality = 'video_' + this.videoQuality;
+    this.apiService.getData(videoDetail).subscribe(
+      (response) => {
+        const videoData = Array.isArray(response) ? response[0] : response;
+        if (actualVideoQuality in videoData) {
+          this.videoSrc = videoData[actualVideoQuality];
+          setTimeout(() => {
+            const videoElement: HTMLVideoElement | null =
+              document.querySelector('.video-element');
+            if (videoElement) {
+              videoElement.load();
+            }
+          }, 100);
+        } else {
+          console.error('Gewählte Auflösung nicht verfügbar.');
+          this.videoSrc = '';
+        }
+      },
+      (error) => {
+        console.error('Fehler beim Abrufen der Video-Details:', error);
+      }
+    );
+  }
 
   togglePlayPause() {
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;

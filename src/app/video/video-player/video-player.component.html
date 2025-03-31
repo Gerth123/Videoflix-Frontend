@@ -1,5 +1,5 @@
 <section>
-  <app-header [isLoggedIn]="true" [videoOfferRoute]="false"></app-header>
+  <app-header [isLoggedIn]="true" [videoOfferRoute]="true"></app-header>
   <div
     class="video-container"
     (mouseenter)="showControls = true"
@@ -15,7 +15,7 @@
         src="https://www.w3schools.com/html/mov_bbb.mp4"
         type="video/mp4"
       /> -->
-      <source src="http://127.0.0.1:8000/media/videos/originals/xy.mp4" type="video/mp4">
+      <source [src]="videoSrc" type="video/mp4">
     </video>
 
     <div class="controls-overlay" *ngIf="showControls">
@@ -31,7 +31,7 @@
         <div class="left-controls">
           <button (click)="togglePlayPause()" class="control-button">
             <img *ngIf="!isPlaying" src="assets/icons/play.svg" alt="Play" />
-            <img *ngIf="isPlaying" src="assets/icons/pause.svg" alt="Pause" />
+            <img *ngIf="isPlaying" src="assets/icons/pause.png" alt="Pause" />
           </button>
 
           <button (click)="rewind()" class="control-button">
