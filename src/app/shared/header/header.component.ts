@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { RoutingService } from '../services/routing-service/routing.service';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { ToastService } from '../services/toast-service/toast.service';
 
 @Component({
   selector: 'app-header',
-  imports: [NgIf],
+  imports: [NgIf, NgClass],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

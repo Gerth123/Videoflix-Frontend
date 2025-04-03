@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RoutingService } from '../services/routing-service/routing.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  imports: [NgClass],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
+  @Input() videoOfferRoute: boolean = false;
+
   constructor(private routingService: RoutingService) { }
 
   /**

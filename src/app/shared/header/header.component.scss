@@ -5,6 +5,12 @@ header {
   padding: 4svh 5vw;
 }
 
+.video-offer-header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
 .logo {
   img {
     height: 32px;
@@ -23,7 +29,7 @@ header {
     &:hover {
       cursor: pointer;
       padding: 12px 26px 12px 26px;
-      filter: brightness(1.2);
+      background-color: #1c2bbf;
     }
   }
 }
@@ -35,12 +41,12 @@ header {
   background-color: var(--blue-color);
   border-radius: 40px;
   gap: 10px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   transition: all 0.3s ease;
 
   &:hover {
     cursor: pointer;
-    padding: 12px 26px 12px 26px;
-    filter: brightness(1.2);
+    padding: 10px 23px 10px 23px;
+    background-color: #1c2bbf;
   }
 }

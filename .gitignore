@@ -30,7 +30,6 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
-.sass-cache/
 .scss-cache/
 /connect.lock
 /coverage
@@ -75,3 +74,5 @@ firebase-debug.log
 
 # MacOS & Linux Systemdateien
 *.swp
+
+/src/assets/fonts
