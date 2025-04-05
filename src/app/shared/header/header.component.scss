@@ -50,3 +50,25 @@ header {
     background-color: #1c2bbf;
   }
 }
+
+.go-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  svg {
+    width: 32px;
+    height: 32px;
+    color: white;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  &:hover svg {
+    color: var(--blue-color);
+    transform: translateX(-5px);
+  }
+}
+
+

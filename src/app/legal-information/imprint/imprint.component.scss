@@ -1,0 +1,23 @@
+section {
+    background-color: var(--black-color);
+    min-height: 100svh;
+}
+
+.imprint-container {
+    padding-top: 5svh;
+    margin-left: 5vw;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: flex-start;
+    gap: 32px;
+    color: var(--white-color);
+}
+
+h1 {
+    font-size: 48px;
+    color: var(--white-color);
+    padding: 0;
+}
