@@ -6,10 +6,10 @@
         <!-- <p>{{ description }}</p> -->
          <h2>Fav Duck</h2>
          <p>The best movie ever! Start now and get the best experience</p>
-        <button (click)="navigateTo('/video-player')"><img src="assets/icons/play_arrow.svg" alt="Play Movie" class="play-icon"><span class="play-text">Play</span></button>
+        <button (click)="navigateTo('/video-player/6.jpg')"><img src="assets/icons/play_arrow.svg" alt="Play Movie" class="play-icon"><span class="play-text">Play</span></button>
     </div>
     <img
-      src="http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg"
+      src="http://127.0.0.1:8000/media/thumbnails/6.jpg"
       alt="Big Thumbnail"
     />
   </div>
@@ -20,8 +20,9 @@
         <div class="thumbnails" #slider>
           <img
             *ngFor="let movie of genre.movies"
-            [src]="movie.thumbnailUrl"
+            [src]="API_BASE_URL + movie.thumbnailUrl"
             alt="Thumbnail"
+            (click)="navigateToVideoPlayer(movie.thumbnailUrl)"
           />
         </div>
         <!-- Steuerungspfeile -->

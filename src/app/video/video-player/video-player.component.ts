@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NetworkService } from '../../shared/services/network-service/network.service';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../shared/services/api-service/api.service';
+import { ToastService } from '../../shared/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-video-player',
@@ -21,17 +22,39 @@ export class VideoPlayerComponent {
   videoQuality: string = 'auto';
   videoSrc: string = '';
   videoId: string = '';
+  private connectionListener: any;
 
   constructor(
     private networkService: NetworkService,
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
     this.videoQuality = this.networkService.getNetworkSpeed();
-    this.videoId = this.route.snapshot.paramMap.get('videoName') || '';
+    this.videoId = this.route.snapshot.paramMap.get('videoId') || '';
     this.setVideoSrc();
+    if ('connection' in navigator) {
+      const connection = (navigator as any).connection;
+      this.connectionListener = () => {
+        const newQuality = this.networkService.getNetworkSpeed();
+        if (this.videoQuality !== newQuality) {
+          this.videoQuality = newQuality;
+          const qualityMessage = `Netzwerkqualität geändert: ${newQuality}`;
+          this.toastService.show(qualityMessage, 'info');
+          this.setVideoSrc(); 
+        }
+      };
+      connection.addEventListener('change', this.connectionListener);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.connectionListener && 'connection' in navigator) {
+      const connection = (navigator as any).connection;
+      connection.removeEventListener('change', this.connectionListener);
+    }
   }
 
   setVideoSrc() {

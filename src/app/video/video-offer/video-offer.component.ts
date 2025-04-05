@@ -13,76 +13,8 @@ import { NgFor } from '@angular/common';
   styleUrl: './video-offer.component.scss',
 })
 export class VideoOfferComponent {
-  genres = [
-    {
-      name: 'New on Videoflix',
-      movies: [
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-      ],
-    },
-    {
-      name: 'Action',
-      movies: [
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-      ],
-    },
-    {
-      name: 'Comedy',
-      movies: [
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-      ],
-    },
-    {
-      name: 'Documentary',
-      movies: [
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-        {
-          thumbnailUrl: 'http://127.0.0.1:8000/media/thumbnails/21_m1qlC1Q.jpg',
-        },
-      ],
-    },
-  ];
+  genres: any[] = [];
+  public API_BASE_URL: string = 'http://127.0.0.1:8000';
 
   constructor(
     private apiService: ApiService,
@@ -92,6 +24,7 @@ export class VideoOfferComponent {
 
   ngOnInit(): void {
     this.checkToken();
+    this.loadGenres();
   }
 
   checkToken() {
@@ -110,11 +43,40 @@ export class VideoOfferComponent {
     this.routingService.navigateTo(path);
   }
 
+  navigateToVideoPlayer(videoUrl: string) {
+    const regex = /\/thumbnails\/([^_]+)/;
+    const match = videoUrl.match(regex);
+  
+    console.log(match);
+    if (match && match[1]) {
+      // Entfernen von '.jpg' am Ende der extrahierten Video-ID
+      const videoId = match[1].replace('.jpg', ''); 
+      this.routingService.navigateTo(`/video-player/${videoId}`);
+    } else {
+      console.log('Kein Video ID gefunden');
+    }
+  }
+  
+  
+  
+
   scrollLeft(slider: HTMLElement) {
     slider.scrollBy({ left: -300, behavior: 'smooth' });
   }
 
   scrollRight(slider: HTMLElement) {
     slider.scrollBy({ left: 300, behavior: 'smooth' });
+  }
+
+  loadGenres() {
+    this.apiService.getGenres().subscribe(
+      (data) => {
+        this.genres = data;
+      },
+      (error) => {
+        console.error('Fehler beim Abrufen der Genres:', error);
+        this.toastService.show('Fehler beim Abrufen der Genres', 'error');
+      }
+    );
   }
 }

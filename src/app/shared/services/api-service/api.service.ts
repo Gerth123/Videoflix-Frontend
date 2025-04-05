@@ -6,7 +6,7 @@ import { Observable, firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private API_BASE_URL = 'http://127.0.0.1:8000/api/';
+  public API_BASE_URL = 'http://127.0.0.1:8000/api/';
 
   constructor(private http: HttpClient) {}
 
@@ -71,7 +71,7 @@ export class ApiService {
     });
   }
 
-  postDataWithoutToken(endpoint: string, data:any): Observable<any> {
+  postDataWithoutToken(endpoint: string, data: any): Observable<any> {
     return this.http.post(`${this.API_BASE_URL}${endpoint}`, data);
   }
 
@@ -124,5 +124,9 @@ export class ApiService {
       console.error('Fehler beim Überprüfen der E-Mail:', error);
       return false;
     }
+  }
+
+  getGenres(): Observable<any> {
+    return this.getData('genres/');
   }
 }
