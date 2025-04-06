@@ -1,9 +1,10 @@
 section {
-  width: 100vw;
+  width: 100%;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   background-color: var(--black-color);
+  padding-bottom: 5svh;
 }
 
 .big-thumbnail-container {
@@ -121,6 +122,9 @@ section {
       overflow-x: auto;
       scroll-behavior: smooth;
       white-space: nowrap;
+      padding: 0 0.5rem;
+      overflow-x: hidden;
+      overflow-y: hidden;
     }
 
     img {
@@ -130,6 +134,8 @@ section {
       object-fit: cover;
       cursor: pointer;
       transition: transform 0.3s ease-in-out;
+      transform-origin: center center; // Optional, aber gut
+      will-change: transform; // Optimiert Animationen
 
       &:hover {
         transform: scale(1.1);
@@ -149,6 +155,7 @@ section {
       padding: 1rem;
       font-size: 1.5rem;
       z-index: 10;
+      visibility: hidden;
     }
 
     .prev {
@@ -156,6 +163,11 @@ section {
     }
     .next {
       right: 0;
+    }
+
+    .thumbnail-slider.show-arrows .prev,
+    .thumbnail-slider.show-arrows .next {
+      visibility: visible;
     }
   }
 }

@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { ApiService } from '../../shared/services/api-service/api.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { RoutingService } from '../../shared/services/routing-service/routing.service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-video-offer',
-  imports: [HeaderComponent, FooterComponent, NgFor],
+  imports: [HeaderComponent, FooterComponent, NgFor, NgIf],
   templateUrl: './video-offer.component.html',
   styleUrl: './video-offer.component.scss',
 })
 export class VideoOfferComponent {
+  @ViewChild('slider', { static: false }) slider!: ElementRef;
+  showArrows: boolean = false;
   genres: any[] = [];
   public API_BASE_URL: string = 'http://127.0.0.1:8000';
 
@@ -27,6 +29,15 @@ export class VideoOfferComponent {
     this.loadGenres();
   }
 
+  ngAfterViewInit(): void {
+    this.checkScrollWidth();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScrollWidth();
+  }
+
   checkToken() {
     const token = localStorage.getItem('auth-token');
     if (!token) {
@@ -39,6 +50,13 @@ export class VideoOfferComponent {
     }
   }
 
+  checkScrollWidth() {
+    const sliderElement = this.slider.nativeElement;
+    const containerWidth = sliderElement.offsetWidth;
+    const contentWidth = sliderElement.scrollWidth;
+    this.showArrows = contentWidth > containerWidth;
+  }
+
   navigateTo(path: string) {
     this.routingService.navigateTo(path);
   }
@@ -46,19 +64,13 @@ export class VideoOfferComponent {
   navigateToVideoPlayer(videoUrl: string) {
     const regex = /\/thumbnails\/([^_]+)/;
     const match = videoUrl.match(regex);
-  
-    console.log(match);
     if (match && match[1]) {
-      // Entfernen von '.jpg' am Ende der extrahierten Video-ID
-      const videoId = match[1].replace('.jpg', ''); 
+      const videoId = match[1].replace('.jpg', '');
       this.routingService.navigateTo(`/video-player/${videoId}`);
     } else {
       console.log('Kein Video ID gefunden');
     }
   }
-  
-  
-  
 
   scrollLeft(slider: HTMLElement) {
     slider.scrollBy({ left: -300, behavior: 'smooth' });

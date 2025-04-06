@@ -26,8 +26,8 @@
           />
         </div>
         <!-- Steuerungspfeile -->
-        <button class="prev" (click)="scrollLeft(slider)">‹</button>
-        <button class="next" (click)="scrollRight(slider)">›</button>
+        <button *ngIf="showArrows" class="prev" (click)="scrollLeft(slider)">‹</button>
+        <button *ngIf="showArrows" class="next" (click)="scrollRight(slider)">›</button>
       </div>
     </div>
   </div>
