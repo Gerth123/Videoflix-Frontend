@@ -24,7 +24,6 @@ section {
     max-height: 65svh;
     object-fit: cover;
     object-position: bottom;
-    // object-position: 20% 70%;
   }
 
   div {
@@ -95,6 +94,35 @@ section {
   transition: none;
 }
 
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .genres-container {
   padding: 2rem;
   display: flex;
@@ -122,7 +150,6 @@ section {
       overflow-x: auto;
       scroll-behavior: smooth;
       white-space: nowrap;
-      padding: 0 0.5rem;
       overflow-x: hidden;
       overflow-y: hidden;
     }
@@ -134,15 +161,14 @@ section {
       object-fit: cover;
       cursor: pointer;
       transition: transform 0.3s ease-in-out;
-      transform-origin: center center; // Optional, aber gut
-      will-change: transform; // Optimiert Animationen
+      transform-origin: center center; 
+      will-change: transform;
 
       &:hover {
         transform: scale(1.1);
       }
     }
 
-    // Steuerungspfeile
     .prev,
     .next {
       position: absolute;
@@ -155,7 +181,6 @@ section {
       padding: 1rem;
       font-size: 1.5rem;
       z-index: 10;
-      visibility: hidden;
     }
 
     .prev {
@@ -168,6 +193,65 @@ section {
     .thumbnail-slider.show-arrows .prev,
     .thumbnail-slider.show-arrows .next {
       visibility: visible;
+    }
+  }
+}
+
+.thumbnail-overlay-wrapper {
+  position: relative;
+  width: auto;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    height: 3svh;
+    width: 220px;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    border-radius: 0 0 5px 5px;
+    transform: scale(1);
+
+    .overlay-title {
+      font-size: 0.8rem;
+      color: #fff;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &:hover .overlay {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    .overlay {
+      opacity: 1;
+    }
+
+    img {
+      transform: none !important;
     }
   }
 }

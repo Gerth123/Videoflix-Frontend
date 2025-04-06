@@ -2,34 +2,63 @@
   <app-header [isLoggedIn]="true" [videoOfferRoute]="true"></app-header>
   <div class="big-thumbnail-container">
     <div class="description-container">
-        <!-- <h2>{{ title }}</h2> -->
-        <!-- <p>{{ description }}</p> -->
-         <h2>Fav Duck</h2>
-         <p>The best movie ever! Start now and get the best experience</p>
-        <button (click)="navigateTo('/video-player/6.jpg')"><img src="assets/icons/play_arrow.svg" alt="Play Movie" class="play-icon"><span class="play-text">Play</span></button>
+      <h2>{{ bigThumbnailTitle }}</h2>
+      <p>{{ bigThumbnailDescription }}</p>
+      <button (click)="navigateTo('/video-player/6.jpg')">
+        <img
+          src="assets/icons/play_arrow.svg"
+          alt="Play Movie"
+          class="play-icon"
+        /><span class="play-text">Play</span>
+      </button>
     </div>
-    <img
-      src="http://127.0.0.1:8000/media/thumbnails/6.jpg"
-      alt="Big Thumbnail"
-    />
+    <img [src]="API_BASE_URL + bigThumbnailUrl" alt="Big Thumbnail" />
   </div>
-  <div class="genres-container">
-    <div *ngFor="let genre of genres" class="genre-section">
+
+  <div *ngIf="loading" class="loading-screen">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+  <div *ngIf="!loading" class="genres-container">
+    <div *ngFor="let genre of genres; let i = index" class="genre-section">
       <h2>{{ genre.name }}</h2>
       <div class="thumbnail-slider">
         <div class="thumbnails" #slider>
-          <img
+          <div
             *ngFor="let movie of genre.movies"
-            [src]="API_BASE_URL + movie.thumbnailUrl"
-            alt="Thumbnail"
-            (click)="navigateToVideoPlayer(movie.thumbnailUrl)"
-          />
+            class="thumbnail-overlay-wrapper"
+          >
+            <img
+              [src]="API_BASE_URL + movie.thumbnailUrl"
+              alt="Thumbnail"
+              (click)="navigateToVideoPlayer(movie.thumbnailUrl)"
+            />
+            <div class="overlay">
+              <p class="overlay-title">{{ movie.title }}</p>
+            </div>
+          </div>
         </div>
-        <!-- Steuerungspfeile -->
-        <button *ngIf="showArrows" class="prev" (click)="scrollLeft(slider)">‹</button>
-        <button *ngIf="showArrows" class="next" (click)="scrollRight(slider)">›</button>
+
+        <!-- Zeige linken Pfeil nur, wenn nicht am Anfang -->
+        <button
+          *ngIf="showLeftArrowList[i]"
+          class="prev"
+          (click)="scrollLeft(slider)"
+        >
+          ‹
+        </button>
+
+        <!-- Zeige rechten Pfeil nur, wenn nicht am Ende -->
+        <button
+          *ngIf="showRightArrowList[i]"
+          class="next"
+          (click)="scrollRight(slider)"
+        >
+          ›
+        </button>
       </div>
     </div>
   </div>
+
   <app-footer [videoOfferRoute]="true"></app-footer>
 </section>

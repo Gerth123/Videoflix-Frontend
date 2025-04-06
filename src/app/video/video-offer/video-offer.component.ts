@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { ApiService } from '../../shared/services/api-service/api.service';
@@ -13,29 +21,53 @@ import { NgFor, NgIf } from '@angular/common';
   styleUrl: './video-offer.component.scss',
 })
 export class VideoOfferComponent {
-  @ViewChild('slider', { static: false }) slider!: ElementRef;
-  showArrows: boolean = false;
+  @ViewChildren('slider') sliders!: QueryList<ElementRef>;
+  showArrowsList: boolean[] = [];
+  showLeftArrowList: boolean[] = [];
+  showRightArrowList: boolean[] = [];
   genres: any[] = [];
+  loading: boolean = true;
+  bigThumbnailUrl: string = '/api/big-thumbnail';
+  bigThumbnailTitle: string = '';
+  bigThumbnailDescription: string = '';
   public API_BASE_URL: string = 'http://127.0.0.1:8000';
 
   constructor(
     private apiService: ApiService,
     private toastService: ToastService,
-    private routingService: RoutingService
+    private routingService: RoutingService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.checkToken();
+    this.loadBigThumbnail();
     this.loadGenres();
   }
 
-  ngAfterViewInit(): void {
-    this.checkScrollWidth();
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.sliders.toArray().forEach((slider, index) => {
+        this.checkScrollWidth(slider.nativeElement, index);
+        this.checkArrowVisibility(slider.nativeElement, index);
+      });
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
+  ngAfterViewChecked() {
+    this.sliders.toArray().forEach((slider, index) => {
+      this.checkScrollWidth(slider.nativeElement, index);
+      this.checkArrowVisibility(slider.nativeElement, index);
+    });
+    this.cdr.detectChanges();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.checkScrollWidth();
+    this.sliders.toArray().forEach((slider, index) => {
+      this.checkScrollWidth(slider.nativeElement, index);
+    });
   }
 
   checkToken() {
@@ -50,11 +82,45 @@ export class VideoOfferComponent {
     }
   }
 
-  checkScrollWidth() {
-    const sliderElement = this.slider.nativeElement;
+  loadBigThumbnail() {
+    this.apiService.getData('big-thumbnail').subscribe((data) => {
+      this.bigThumbnailUrl = data.thumbnail;
+      this.bigThumbnailTitle = data.title;
+      this.bigThumbnailDescription = data.description;
+      this.loading = false;
+    });
+  }
+
+  checkScrollWidth(sliderElement: HTMLElement, index: number) {
     const containerWidth = sliderElement.offsetWidth;
     const contentWidth = sliderElement.scrollWidth;
-    this.showArrows = contentWidth > containerWidth;
+
+    // Berechne, ob der Inhalt größer als der Container ist (damit Pfeile angezeigt werden können)
+    const hasOverflow = contentWidth > containerWidth;
+
+    // Berechne den Scroll-Status
+    const scrollLeft = sliderElement.scrollLeft;
+    const atStart = scrollLeft === 0;
+    const atEnd = scrollLeft + containerWidth >= contentWidth;
+
+    // Speichere, ob die Pfeile angezeigt werden sollen
+    this.showArrowsList[index] = hasOverflow;
+
+    // Aktualisiere die Sichtbarkeit der Pfeile, abhängig vom Scroll-Status
+    this.showLeftArrowList[index] = !atStart && hasOverflow;
+    this.showRightArrowList[index] = !atEnd && hasOverflow;
+  }
+
+  checkArrowVisibility(sliderElement: HTMLElement, index: number) {
+    const containerWidth = sliderElement.offsetWidth;
+    const contentWidth = sliderElement.scrollWidth;
+    const scrollLeft = sliderElement.scrollLeft;
+
+    const atStart = scrollLeft === 0;
+    const atEnd = scrollLeft + containerWidth >= contentWidth;
+
+    this.showLeftArrowList[index] = !atStart;
+    this.showRightArrowList[index] = !atEnd;
   }
 
   navigateTo(path: string) {
@@ -74,20 +140,34 @@ export class VideoOfferComponent {
 
   scrollLeft(slider: HTMLElement) {
     slider.scrollBy({ left: -300, behavior: 'smooth' });
+    setTimeout(() => {
+      this.checkArrowVisibility(slider, 0);
+    }, 300); 
+    this.showLeftArrowList[0] = slider.scrollLeft > 0;
+    this.showRightArrowList[0] =
+      slider.scrollLeft + slider.offsetWidth < slider.scrollWidth;
   }
 
   scrollRight(slider: HTMLElement) {
     slider.scrollBy({ left: 300, behavior: 'smooth' });
+    setTimeout(() => {
+      this.checkArrowVisibility(slider, 0);
+    }, 300);
+    this.showRightArrowList[0] =
+      slider.scrollLeft + slider.offsetWidth < slider.scrollWidth;
+    this.showLeftArrowList[0] = slider.scrollLeft > 0;
   }
 
   loadGenres() {
     this.apiService.getGenres().subscribe(
       (data) => {
         this.genres = data;
+        this.loading = false;
+        console.log(this.genres);
       },
       (error) => {
-        console.error('Fehler beim Abrufen der Genres:', error);
-        this.toastService.show('Fehler beim Abrufen der Genres', 'error');
+        this.toastService.show('Fehler beim Laden der Genres', 'error');
+        this.loading = false;
       }
     );
   }
