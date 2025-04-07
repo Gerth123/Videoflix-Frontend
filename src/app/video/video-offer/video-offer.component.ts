@@ -163,7 +163,6 @@ export class VideoOfferComponent {
       (data) => {
         this.genres = data;
         this.loading = false;
-        console.log(this.genres);
       },
       (error) => {
         this.toastService.show('Fehler beim Laden der Genres', 'error');

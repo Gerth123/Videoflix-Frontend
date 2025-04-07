@@ -1,6 +1,6 @@
 <section>
   <app-header [isLoggedIn]="true" [videoOfferRoute]="true"></app-header>
-  <div
+  <!-- <div
     class="video-container"
     (mouseenter)="showControls = true"
     (mouseleave)="showControls = false"
@@ -11,10 +11,6 @@
       (timeupdate)="updateTime()"
       (loadedmetadata)="setDuration()"
     >
-      <!-- <source
-        src="https://www.w3schools.com/html/mov_bbb.mp4"
-        type="video/mp4"
-      /> -->
       <source [src]="videoSrc" type="video/mp4">
     </video>
 
@@ -56,5 +52,34 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+  <vg-player (onPlayerReady)="onPlayerReady($event)">
+    <vg-overlay-play></vg-overlay-play>
+    <vg-buffering></vg-buffering>
+
+    <vg-controls>
+        <vg-play-pause></vg-play-pause>
+        <vg-playback-button></vg-playback-button>
+
+        <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
+
+        <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-track-selector></vg-track-selector>
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+
+        <vg-fullscreen></vg-fullscreen>
+    </vg-controls>
+
+    <video [vgMedia]="media" #media id="singleVideo" preload="auto" crossorigin>
+      <source [src]="videoSrc" type="video/mp4">
+    </video>     
+</vg-player>
 </section>
