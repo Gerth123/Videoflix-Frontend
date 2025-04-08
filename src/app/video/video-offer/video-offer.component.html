@@ -1,10 +1,10 @@
 <section>
   <app-header [isLoggedIn]="true" [videoOfferRoute]="true"></app-header>
-  <div class="big-thumbnail-container">
+  <div *ngIf="loading === 2" class="big-thumbnail-container">
     <div class="description-container">
       <h2>{{ bigThumbnailTitle }}</h2>
       <p>{{ bigThumbnailDescription }}</p>
-      <button (click)="navigateTo('/video-player/6.jpg')">
+      <button (click)="navigateToVideoPlayer(bigThumbnailUrl)">
         <img
           src="assets/icons/play_arrow.svg"
           alt="Play Movie"
@@ -15,11 +15,11 @@
     <img [src]="API_BASE_URL + bigThumbnailUrl" alt="Big Thumbnail" />
   </div>
 
-  <div *ngIf="loading" class="loading-screen">
+  <div *ngIf="loading < 2" class="loading-screen">
     <div class="spinner"></div>
     <p>Loading...</p>
   </div>
-  <div *ngIf="!loading" class="genres-container">
+  <div *ngIf="loading === 2" class="genres-container">
     <div *ngFor="let genre of genres; let i = index" class="genre-section">
       <h2>{{ genre.name }}</h2>
       <div class="thumbnail-slider">

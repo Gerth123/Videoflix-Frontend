@@ -26,7 +26,7 @@ export class VideoOfferComponent {
   showLeftArrowList: boolean[] = [];
   showRightArrowList: boolean[] = [];
   genres: any[] = [];
-  loading: boolean = true;
+  loading: number = 0;
   bigThumbnailUrl: string = '/api/big-thumbnail';
   bigThumbnailTitle: string = '';
   bigThumbnailDescription: string = '';
@@ -39,10 +39,17 @@ export class VideoOfferComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
-    this.checkToken();
-    this.loadBigThumbnail();
-    this.loadGenres();
+  async ngOnInit(): Promise<void> {
+    const savedGenres = sessionStorage.getItem('genres');
+    if (savedGenres) {
+      this.genres = JSON.parse(savedGenres);
+      this.loading += 1;
+    } else {
+      this.loading = 0;
+      await this.loadGenres();
+    }
+
+    await Promise.all([this.checkToken(), this.loadBigThumbnail()]);
   }
 
   ngAfterViewInit() {
@@ -87,26 +94,18 @@ export class VideoOfferComponent {
       this.bigThumbnailUrl = data.thumbnail;
       this.bigThumbnailTitle = data.title;
       this.bigThumbnailDescription = data.description;
-      this.loading = false;
+      this.loading += 1;
     });
   }
 
   checkScrollWidth(sliderElement: HTMLElement, index: number) {
     const containerWidth = sliderElement.offsetWidth;
     const contentWidth = sliderElement.scrollWidth;
-
-    // Berechne, ob der Inhalt größer als der Container ist (damit Pfeile angezeigt werden können)
     const hasOverflow = contentWidth > containerWidth;
-
-    // Berechne den Scroll-Status
     const scrollLeft = sliderElement.scrollLeft;
     const atStart = scrollLeft === 0;
     const atEnd = scrollLeft + containerWidth >= contentWidth;
-
-    // Speichere, ob die Pfeile angezeigt werden sollen
     this.showArrowsList[index] = hasOverflow;
-
-    // Aktualisiere die Sichtbarkeit der Pfeile, abhängig vom Scroll-Status
     this.showLeftArrowList[index] = !atStart && hasOverflow;
     this.showRightArrowList[index] = !atEnd && hasOverflow;
   }
@@ -115,10 +114,8 @@ export class VideoOfferComponent {
     const containerWidth = sliderElement.offsetWidth;
     const contentWidth = sliderElement.scrollWidth;
     const scrollLeft = sliderElement.scrollLeft;
-
     const atStart = scrollLeft === 0;
     const atEnd = scrollLeft + containerWidth >= contentWidth;
-
     this.showLeftArrowList[index] = !atStart;
     this.showRightArrowList[index] = !atEnd;
   }
@@ -143,7 +140,7 @@ export class VideoOfferComponent {
     slider.scrollBy({ left: -300, behavior: 'smooth' });
     setTimeout(() => {
       this.checkArrowVisibility(slider, 0);
-    }, 300); 
+    }, 300);
     this.showLeftArrowList[0] = slider.scrollLeft > 0;
     this.showRightArrowList[0] =
       slider.scrollLeft + slider.offsetWidth < slider.scrollWidth;
@@ -163,11 +160,12 @@ export class VideoOfferComponent {
     this.apiService.getGenres().subscribe(
       (data) => {
         this.genres = data;
-        this.loading = false;
+        this.loading += 1;
+        sessionStorage.setItem('genres', JSON.stringify(data));
       },
       (error) => {
         this.toastService.show('Fehler beim Laden der Genres', 'error');
-        this.loading = false;
+        this.loading += 1;
       }
     );
   }

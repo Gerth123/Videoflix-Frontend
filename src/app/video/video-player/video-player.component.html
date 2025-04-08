@@ -1,33 +1,81 @@
 <section>
-  <app-header [isLoggedIn]="true" [videoOfferRoute]="true"></app-header>
-  
-  <div class="video-container">
-    <!-- Video-Element -->
-    <video
-      #videoPlayer
-      id="my-video"
-      class="video-js vjs-default-skin"
-      controls
-      preload="auto"
-      max-width="100%"
-      width="100%"
-      overflow="hidden"
-      height="100%"
-      max-height="100%"
-      [poster]="poster"
-      data-setup="{}"
-    >
-      <source [src]="videoSrc" type="video/mp4" />
-    </video>
-    
-    <!-- 10 Sekunden zurück Button -->
-    <button class="control-button vjs-seek-backward" (click)="rewind()">
-      <img src="assets/icons/rewind.svg" alt="Rewind 10s" />
-    </button>
+  <app-header [isLoggedIn]="true" [videoOfferRoute]="false" [videoPlayerRoute]="true"></app-header>
 
-    <!-- 10 Sekunden vor Button -->
-    <button class="control-button vjs-seek-forward" (click)="fastForward()">
-      <img src="assets/icons/forward.svg" alt="Forward 10s" />
-    </button>
+  <div class="video-container" #videoContainer>
+
+    <div *ngIf="loading" class="loading-screen">
+      <div class="loading-spinner"></div>
+      <p>Video wird geladen...</p>
+    </div>
+
+    <video #videoPlayer id="my-video" preload="auto" [poster]="poster" (click)="togglePlayPause()">
+      <source [src]="videoSrc" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="controls-overlay">
+      <input
+        class="progress-bar"
+        type="range"
+        min="0"
+        [max]="duration"
+        [(ngModel)]="currentTime"
+        [value]="currentTime"
+        (input)="seekVideo()"
+      />
+      <div class="controls-container">
+        <div class="controls">
+          <button class="control-button" (click)="togglePlayPause()">
+            <img *ngIf="!isPlaying" src="assets/icons/play.svg" alt="Play" />
+            <img *ngIf="isPlaying" src="assets/icons/pause.png" alt="Pause" />
+          </button>
+
+          <button class="control-button" (click)="rewind()">
+            <img src="assets/icons/rewind.svg" alt="Rewind 10s" />
+          </button>
+
+          <button class="control-button" (click)="fastForward()">
+            <img src="assets/icons/forward.svg" alt="Forward 10s" />
+          </button>
+
+          <button class="control-button">
+            <div class="volume-bar-container">
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                [(ngModel)]="volume"
+                (input)="setVolume()"
+                class="volume-bar"
+              />
+            </div>
+            <img src="assets/icons/volume_up.svg" alt="Volume" />
+          </button>
+        </div>
+        <div class="title">{{ title }}</div>
+        <div class="controls">
+          <div class="control-button">
+            <img 
+              src="assets/icons/speed.svg" 
+              alt="Speed" 
+              class="speed-icon" 
+              (click)="toggleDropdown()"
+            />
+          
+            <!-- Das benutzerdefinierte Dropdown, das nur bei Klick angezeigt wird -->
+            <div *ngIf="dropdownVisible" class="dropdown">
+              <div (click)="setSpeed(0.5)" class="dropdown-option">0.5x</div>
+              <div (click)="setSpeed(1)" class="dropdown-option">1x (Normal)</div>
+              <div (click)="setSpeed(1.5)" class="dropdown-option">1.5x</div>
+              <div (click)="setSpeed(2)" class="dropdown-option">2x</div>
+            </div>
+          </div>
+          <button class="control-button" (click)="toggleFullscreen()">
+            <img src="assets/icons/fullscreen.svg" alt="Fullscreen" />
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
