@@ -1,4 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,32 +11,17 @@ import { NetworkService } from '../../shared/services/network-service/network.se
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../shared/services/api-service/api.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
-import {
-  IMediaElement,
-  VgApiService,
-  VgCoreModule,
-  VgMediaDirective,
-} from '@videogular/ngx-videogular/core';
-import { VgControlsModule } from '@videogular/ngx-videogular/controls';
-import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
-import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
-import { IPlayable } from '@videogular/ngx-videogular/core'; // Stelle sicher, dass du IPlayable importierst
+import videojs from 'video.js';
+import { RoutingService } from '../../shared/services/routing-service/routing.service';
 
 @Component({
   selector: 'app-video-player',
-  imports: [
-    HeaderComponent,
-    FormsModule,
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-  ],
+  imports: [HeaderComponent, FormsModule],
   templateUrl: './video-player.component.html',
   styleUrl: './video-player.component.scss',
 })
 export class VideoPlayerComponent {
-  @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef;
+  @ViewChild('videoPlayer', { static: false }) videoElementRef!: ElementRef;
   isPlaying = false;
   showControls = false;
   duration = 0;
@@ -40,18 +30,20 @@ export class VideoPlayerComponent {
   videoSrc: string = '';
   videoId: string = '';
   private connectionListener: any;
-  @ViewChild('media', { static: false }) media!: IMediaElement;
-  vgApi!: VgApiService;
   preload: string = 'auto';
+  poster = 'http://127.0.0.1:8000/media/thumbnails/19.jpg';
 
   constructor(
     private networkService: NetworkService,
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private routingService: RoutingService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.poster = this.routingService.getPoster();
     this.videoQuality = this.networkService.getNetworkSpeed();
     this.videoId = this.route.snapshot.paramMap.get('videoId') || '';
     this.setVideoSrc();
@@ -71,9 +63,18 @@ export class VideoPlayerComponent {
   }
 
   ngAfterViewInit() {
-    const mediaElement: IPlayable = this.videoPlayer.nativeElement;
-    this.vgApi.registerMedia(mediaElement);
-  } 
+    const videoElement = this.videoElementRef.nativeElement;
+    videoElement.onplay = () => {
+      this.isPlaying = true;
+    };
+    videoElement.onpause = () => {
+      this.isPlaying = false;
+    };
+    videoElement.ontimeupdate = () => {
+      this.currentTime = videoElement.currentTime;
+      this.duration = videoElement.duration;
+    };
+  }
 
   ngOnDestroy(): void {
     if (this.connectionListener && 'connection' in navigator) {
@@ -82,15 +83,6 @@ export class VideoPlayerComponent {
     }
   }
 
-  onPlayerReady(api: VgApiService) {
-    this.vgApi = api;
-
-    // Initialisierung und Steuerung des Video-Players über vgApi
-    this.vgApi.getDefaultMedia().subscriptions.ended.subscribe(() => {
-      this.vgApi.getDefaultMedia().currentTime = 0;
-    });
-  }
-  
   setVideoSrc() {
     const videoBaseUrl = 'videos/';
     const videoDetail = videoBaseUrl + this.videoId;
@@ -120,21 +112,27 @@ export class VideoPlayerComponent {
             }
           }
         }
+
         if (
           selectedQuality in videoData &&
           videoData[selectedQuality] !== null
         ) {
           this.videoSrc = videoData[selectedQuality];
+          console.log(this.videoSrc);
+
+          // Erzwinge eine View-Update durch Angular
+          this.cdr.detectChanges();
+
           setTimeout(() => {
             const videoElement: HTMLVideoElement | null =
-              document.querySelector('.video-element');
+              this.videoElementRef.nativeElement;
             if (videoElement) {
-              videoElement.load();
+              videoElement.load(); // Lade das Video neu
             }
           }, 100);
         } else {
           console.error('Keine verfügbare Auflösung für dieses Video.');
-          this.videoSrc = ''; // Keine Quelle verfügbar
+          this.videoSrc = '';
         }
       },
       (error) => {
@@ -169,15 +167,19 @@ export class VideoPlayerComponent {
   //   video.currentTime = this.currentTime;
   // }
 
-  // rewind() {
-  //   const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-  //   video.currentTime -= 10; // 10 Sekunden zurück
-  // }
+  rewind() {
+    const videoElement: HTMLVideoElement = this.videoElementRef.nativeElement;
+    if (videoElement) {
+      videoElement.currentTime -= 10;
+    }
+  }
 
-  // fastForward() {
-  //   const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-  //   video.currentTime += 10; // 10 Sekunden vor
-  // }
+  fastForward() {
+    const videoElement: HTMLVideoElement = this.videoElementRef.nativeElement;
+    if (videoElement) {
+      videoElement.currentTime += 10;
+    }
+  }
 
   // toggleFullscreen() {
   //   const video: HTMLVideoElement = this.videoPlayer.nativeElement;

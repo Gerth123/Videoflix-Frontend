@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 })
 export class RoutingService {
   emailFromDashboard: string = '';
+  poster: string = '';
 
   constructor(private router: Router) {}
 
@@ -16,5 +17,15 @@ export class RoutingService {
    */
   navigateTo(route: string): void {
     this.router.navigate([route]);
+  }
+
+  setPoster(poster: string): void {
+    this.poster = poster;
+    localStorage.setItem('poster', poster);
+  }
+
+  getPoster(): string {
+    if (this.poster) return this.poster;
+    return localStorage.getItem('poster') || '';
   }
 }

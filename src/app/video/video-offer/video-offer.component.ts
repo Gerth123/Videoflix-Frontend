@@ -131,6 +131,7 @@ export class VideoOfferComponent {
     const regex = /\/thumbnails\/([^_]+)/;
     const match = videoUrl.match(regex);
     if (match && match[1]) {
+      this.routingService.setPoster(this.API_BASE_URL + videoUrl);
       const videoId = match[1].replace('.jpg', '');
       this.routingService.navigateTo(`/video-player/${videoId}`);
     } else {

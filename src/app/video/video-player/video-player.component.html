@@ -1,85 +1,33 @@
 <section>
   <app-header [isLoggedIn]="true" [videoOfferRoute]="true"></app-header>
-  <!-- <div
-    class="video-container"
-    (mouseenter)="showControls = true"
-    (mouseleave)="showControls = false"
-  >
+  
+  <div class="video-container">
+    <!-- Video-Element -->
     <video
       #videoPlayer
-      class="video-element"
-      (timeupdate)="updateTime()"
-      (loadedmetadata)="setDuration()"
+      id="my-video"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      max-width="100%"
+      width="100%"
+      overflow="hidden"
+      height="100%"
+      max-height="100%"
+      [poster]="poster"
+      data-setup="{}"
     >
-      <source [src]="videoSrc" type="video/mp4">
+      <source [src]="videoSrc" type="video/mp4" />
     </video>
+    
+    <!-- 10 Sekunden zurück Button -->
+    <button class="control-button vjs-seek-backward" (click)="rewind()">
+      <img src="assets/icons/rewind.svg" alt="Rewind 10s" />
+    </button>
 
-    <div class="controls-overlay" *ngIf="showControls">
-      <input
-        type="range"
-        class="progress-bar"
-        min="0"
-        [max]="duration"
-        [(ngModel)]="currentTime"
-        (change)="seekVideo()"
-      />
-      <div class="controls">
-        <div class="left-controls">
-          <button (click)="togglePlayPause()" class="control-button">
-            <img *ngIf="!isPlaying" src="assets/icons/play.svg" alt="Play" />
-            <img *ngIf="isPlaying" src="assets/icons/pause.png" alt="Pause" />
-          </button>
-
-          <button (click)="rewind()" class="control-button">
-            <img src="assets/icons/rewind.svg" alt="Rewind" />
-          </button>
-
-          <button (click)="fastForward()" class="control-button">
-            <img src="assets/icons/forward.svg" alt="Forward" />
-          </button>
-
-          <button>
-            <img src="assets/icons/volume_up.svg" alt="Volume" />
-          </button>
-        </div>
-        <div class="right-controls">
-          <button>
-            <img src="assets/icons/speed.svg" alt="Speed" />
-          </button>
-          <button (click)="toggleFullscreen()" class="control-button">
-            <img src="assets/icons/fullscreen.svg" alt="Fullscreen" />
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <vg-player (onPlayerReady)="onPlayerReady($event)">
-    <vg-overlay-play></vg-overlay-play>
-    <vg-buffering></vg-buffering>
-
-    <vg-controls>
-        <vg-play-pause></vg-play-pause>
-        <vg-playback-button></vg-playback-button>
-
-        <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-
-        <vg-scrub-bar>
-            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-        </vg-scrub-bar>
-
-        <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
-        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-
-        <vg-track-selector></vg-track-selector>
-        <vg-mute></vg-mute>
-        <vg-volume></vg-volume>
-
-        <vg-fullscreen></vg-fullscreen>
-    </vg-controls>
-
-    <video [vgMedia]="media" #media id="singleVideo" preload="auto" crossorigin>
-      <source [src]="videoSrc" type="video/mp4">
-    </video>     
-</vg-player>
+    <!-- 10 Sekunden vor Button -->
+    <button class="control-button vjs-seek-forward" (click)="fastForward()">
+      <img src="assets/icons/forward.svg" alt="Forward 10s" />
+    </button>
+  </div>
 </section>
