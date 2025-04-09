@@ -23,6 +23,7 @@ import { RoutingService } from '../../shared/services/routing-service/routing.se
 export class VideoPlayerComponent {
   @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef;
   @ViewChild('videoContainer') videoContainer!: ElementRef;
+
   isPlaying = false;
   title: string = '';
   duration: number = 0;
@@ -40,6 +41,7 @@ export class VideoPlayerComponent {
   isFullscreen: boolean = false;
   isControlsVisible: boolean = true;
   timeout: any;
+  fullscreenChangeHandler: any;
 
   constructor(
     private networkService: NetworkService,
@@ -67,29 +69,53 @@ export class VideoPlayerComponent {
         }
       };
       connection.addEventListener('change', this.connectionListener);
+      this.fullscreenChangeHandler = this.onFullscreenChange.bind(this);
       document.addEventListener(
         'fullscreenchange',
-        this.onFullscreenChange.bind(this)
+        this.fullscreenChangeHandler
+      );
+      document.addEventListener(
+        'webkitfullscreenchange',
+        this.fullscreenChangeHandler
+      );
+      document.addEventListener(
+        'mozfullscreenchange',
+        this.fullscreenChangeHandler
       );
     }
   }
 
   ngAfterViewInit() {
-    const videoElement = this.videoPlayer.nativeElement;
-    videoElement.onplay = () => {
-      this.isPlaying = true;
-    };
-    videoElement.onpause = () => {
-      this.isPlaying = false;
-    };
-    videoElement.ontimeupdate = () => {
-      this.currentTime = videoElement.currentTime;
-      this.duration = videoElement.duration;
+    const videoElement: HTMLVideoElement = this.videoPlayer.nativeElement;
+
+    const updateProgress = () => {
+      this.currentTime = Math.floor(videoElement.currentTime);
+      this.duration = Math.floor(videoElement.duration);
+
+      // Nur weitermachen, wenn das Video läuft
+      if (!videoElement.paused && !videoElement.ended) {
+        requestAnimationFrame(updateProgress);
+      }
     };
 
+    videoElement.addEventListener('play', () => {
+      this.isPlaying = true;
+      requestAnimationFrame(updateProgress);
+    });
+
+    videoElement.addEventListener('pause', () => {
+      this.isPlaying = false;
+    });
+
     videoElement.addEventListener('ended', () => {
+      this.currentTime = this.duration; // Fortschrittsanzeige voll setzen
+      this.isPlaying = false;
       this.showControls();
       this.showMouse();
+    });
+
+    videoElement.addEventListener('loadedmetadata', () => {
+      this.duration = Math.floor(videoElement.duration);
     });
   }
 
@@ -100,7 +126,15 @@ export class VideoPlayerComponent {
     }
     document.removeEventListener(
       'fullscreenchange',
-      this.onFullscreenChange.bind(this)
+      this.fullscreenChangeHandler
+    );
+    document.removeEventListener(
+      'webkitfullscreenchange',
+      this.fullscreenChangeHandler
+    );
+    document.removeEventListener(
+      'mozfullscreenchange',
+      this.fullscreenChangeHandler
     );
   }
 
@@ -214,13 +248,19 @@ export class VideoPlayerComponent {
 
   togglePlayPause() {
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+
+    // Wenn am Ende, setze zurück auf Anfang
+    if (Math.floor(video.currentTime) >= Math.floor(video.duration)) {
+      video.currentTime = 0;
+    }
+
     if (video.paused) {
       video.play();
-      this.isPlaying = true;
     } else {
       video.pause();
-      this.isPlaying = false;
     }
+
+    this.isPlaying = !video.paused;
   }
 
   updateTime() {
@@ -233,9 +273,10 @@ export class VideoPlayerComponent {
     this.duration = video.duration;
   }
 
-  seekVideo() {
+  seekVideo(event: Event) {
+    const input = event.target as HTMLInputElement;
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-    video.currentTime = this.currentTime;
+    video.currentTime = Number(input.value);
   }
 
   rewind() {
@@ -278,31 +319,27 @@ export class VideoPlayerComponent {
   }
 
   toggleFullscreen() {
-    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    const container: HTMLElement = this.videoContainer.nativeElement;
 
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if ((video as any).mozRequestFullScreen) {
-      // Für Firefox
-      (video as any).mozRequestFullScreen();
-    } else if ((video as any).webkitRequestFullscreen) {
-      // Für Webkit-basierte Browser (Safari, Chrome)
-      (video as any).webkitRequestFullscreen();
+    if (!document.fullscreenElement) {
+      // In Fullscreen gehen
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if ((container as any).mozRequestFullScreen) {
+        (container as any).mozRequestFullScreen();
+      } else if ((container as any).webkitRequestFullscreen) {
+        (container as any).webkitRequestFullscreen();
+      }
+    } else {
+      // Fullscreen verlassen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).mozCancelFullScreen) {
+        (document as any).mozCancelFullScreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      }
     }
-
-    // Event-Listener für den Wechsel in den Vollbildmodus hinzufügen
-    document.addEventListener(
-      'fullscreenchange',
-      this.onFullscreenChange.bind(this)
-    );
-    document.addEventListener(
-      'webkitfullscreenchange',
-      this.onFullscreenChange.bind(this)
-    ); // Für Webkit-Browser
-    document.addEventListener(
-      'mozfullscreenchange',
-      this.onFullscreenChange.bind(this)
-    ); // Für Firefox
   }
 
   adjustDropdownPosition() {
@@ -314,5 +351,16 @@ export class VideoPlayerComponent {
         dropdown.style.bottom = '40px';
       }
     }
+  }
+
+  formatTime(seconds: number): string {
+    if (isNaN(seconds) || seconds === undefined) {
+      return '00:00';
+    }
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    const paddedSecs = secs < 10 ? '0' + secs : secs;
+    const paddedMins = minutes < 10 ? '0' + minutes : minutes;
+    return `${paddedMins}:${paddedSecs}`;
   }
 }

@@ -1,28 +1,45 @@
 <section>
-  <app-header [isLoggedIn]="true" [videoOfferRoute]="false" [videoPlayerRoute]="true"></app-header>
+  <app-header
+    [isLoggedIn]="true"
+    [videoOfferRoute]="false"
+    [videoPlayerRoute]="true"
+  ></app-header>
 
-  <div class="video-container" #videoContainer>
-
+  <div
+    class="video-container"
+    #videoContainer
+    [class.fullscreen-active]="isFullscreen"
+  >
     <div *ngIf="loading" class="loading-screen">
       <div class="loading-spinner"></div>
       <p>Video wird geladen...</p>
     </div>
 
-    <video #videoPlayer id="my-video" preload="auto" [poster]="poster" (click)="togglePlayPause()">
+    <video
+      #videoPlayer
+      id="my-video"
+      preload="auto"
+      [poster]="poster"
+      (click)="togglePlayPause()"
+    >
       <source [src]="videoSrc" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
 
     <div class="controls-overlay">
-      <input
-        class="progress-bar"
-        type="range"
-        min="0"
-        [max]="duration"
-        [(ngModel)]="currentTime"
-        [value]="currentTime"
-        (input)="seekVideo()"
-      />
+      <div class="progress-wrapper">
+        <input
+          class="progress-bar"
+          type="range"
+          min="0"
+          [max]="duration"
+          [value]="currentTime"
+          (input)="seekVideo($event)"
+        />
+        <div class="time-display">
+          {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+        </div>
+      </div>
       <div class="controls-container">
         <div class="controls">
           <button class="control-button" (click)="togglePlayPause()">
@@ -56,23 +73,31 @@
         <div class="title">{{ title }}</div>
         <div class="controls">
           <div class="control-button">
-            <img 
-              src="assets/icons/speed.svg" 
-              alt="Speed" 
-              class="speed-icon" 
+            <img
+              src="assets/icons/speed.svg"
+              alt="Speed"
+              class="speed-icon"
               (click)="toggleDropdown()"
             />
-          
-            <!-- Das benutzerdefinierte Dropdown, das nur bei Klick angezeigt wird -->
+
             <div *ngIf="dropdownVisible" class="dropdown">
               <div (click)="setSpeed(0.5)" class="dropdown-option">0.5x</div>
-              <div (click)="setSpeed(1)" class="dropdown-option">1x (Normal)</div>
+              <div (click)="setSpeed(1)" class="dropdown-option">
+                1x (Normal)
+              </div>
               <div (click)="setSpeed(1.5)" class="dropdown-option">1.5x</div>
               <div (click)="setSpeed(2)" class="dropdown-option">2x</div>
             </div>
           </div>
           <button class="control-button" (click)="toggleFullscreen()">
-            <img src="assets/icons/fullscreen.svg" alt="Fullscreen" />
+            <img
+              [src]="
+                isFullscreen
+                  ? 'assets/icons/exit_fullscreen.png'
+                  : 'assets/icons/fullscreen.svg'
+              "
+              alt="Fullscreen Toggle"
+            />
           </button>
         </div>
       </div>
