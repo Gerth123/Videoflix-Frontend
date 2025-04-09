@@ -91,8 +91,6 @@ export class VideoPlayerComponent {
     const updateProgress = () => {
       this.currentTime = Math.floor(videoElement.currentTime);
       this.duration = Math.floor(videoElement.duration);
-
-      // Nur weitermachen, wenn das Video läuft
       if (!videoElement.paused && !videoElement.ended) {
         requestAnimationFrame(updateProgress);
       }
@@ -108,7 +106,7 @@ export class VideoPlayerComponent {
     });
 
     videoElement.addEventListener('ended', () => {
-      this.currentTime = this.duration; // Fortschrittsanzeige voll setzen
+      this.currentTime = this.duration;
       this.isPlaying = false;
       this.showControls();
       this.showMouse();
@@ -248,17 +246,15 @@ export class VideoPlayerComponent {
 
   togglePlayPause() {
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-
-    // Wenn am Ende, setze zurück auf Anfang
+    if (this.loading) {
+      console.log('Das Video wird noch geladen');
+      return;
+    }
     if (Math.floor(video.currentTime) >= Math.floor(video.duration)) {
       video.currentTime = 0;
     }
-
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
+    if (video.paused) video.play();
+    else video.pause();
 
     this.isPlaying = !video.paused;
   }
@@ -271,6 +267,16 @@ export class VideoPlayerComponent {
   setDuration() {
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;
     this.duration = video.duration;
+  }
+
+  onMetadataLoaded() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    this.duration = video.duration;
+  }
+
+  onTimeUpdate() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    this.currentTime = video.currentTime;
   }
 
   seekVideo(event: Event) {
@@ -290,15 +296,6 @@ export class VideoPlayerComponent {
     const videoElement: HTMLVideoElement = this.videoPlayer.nativeElement;
     if (videoElement) {
       videoElement.currentTime += 10;
-    }
-  }
-
-  toggleMute() {
-    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-    if (video.muted) {
-      video.muted = false;
-    } else {
-      video.muted = true;
     }
   }
 
@@ -322,7 +319,6 @@ export class VideoPlayerComponent {
     const container: HTMLElement = this.videoContainer.nativeElement;
 
     if (!document.fullscreenElement) {
-      // In Fullscreen gehen
       if (container.requestFullscreen) {
         container.requestFullscreen();
       } else if ((container as any).mozRequestFullScreen) {
@@ -331,13 +327,14 @@ export class VideoPlayerComponent {
         (container as any).webkitRequestFullscreen();
       }
     } else {
-      // Fullscreen verlassen
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if ((document as any).mozCancelFullScreen) {
-        (document as any).mozCancelFullScreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        (document as any).webkitExitFullscreen();
+      if (document.fullscreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if ((document as any).mozCancelFullScreen) {
+          (document as any).mozCancelFullScreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          (document as any).webkitExitFullscreen();
+        }
       }
     }
   }

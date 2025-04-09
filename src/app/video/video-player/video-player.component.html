@@ -21,6 +21,8 @@
       preload="auto"
       [poster]="poster"
       (click)="togglePlayPause()"
+      (loadedmetadata)="onMetadataLoaded()"
+      (timeupdate)="onTimeUpdate()"
     >
       <source [src]="videoSrc" type="video/mp4" />
       Your browser does not support the video tag.
