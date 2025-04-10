@@ -33,13 +33,15 @@ export class VideoOfferComponent {
   public API_BASE_URL: string = 'http://127.0.0.1:8000';
 
   constructor(
-    private apiService: ApiService,
+    public apiService: ApiService,
     private toastService: ToastService,
     private routingService: RoutingService,
     private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
+    const tokenValid = await this.checkToken();
+    if (!tokenValid) return;
     const savedGenres = sessionStorage.getItem('genres');
     if (savedGenres) {
       this.genres = JSON.parse(savedGenres);
@@ -48,8 +50,7 @@ export class VideoOfferComponent {
       this.loading = 0;
       await this.loadGenres();
     }
-
-    await Promise.all([this.checkToken(), this.loadBigThumbnail()]);
+    await this.loadBigThumbnail();
   }
 
   ngAfterViewInit() {
@@ -86,16 +87,23 @@ export class VideoOfferComponent {
           this.toastService.show('Bitte anmelden oder registrieren', 'info'),
         300
       );
+      return false;
     }
+    return true;
   }
 
   loadBigThumbnail() {
-    this.apiService.getData('big-thumbnail').subscribe((data) => {
-      this.bigThumbnailUrl = data.thumbnail;
-      this.bigThumbnailTitle = data.title;
-      this.bigThumbnailDescription = data.description;
-      this.loading += 1;
-    });
+    const data$ = this.apiService.getData('big-thumbnail');
+    if (data$) {
+      data$.subscribe((data) => {
+        this.bigThumbnailUrl = data.thumbnail;
+        this.bigThumbnailTitle = data.title;
+        this.bigThumbnailDescription = data.description;
+        this.loading += 1;
+      });
+    } else {
+      console.error('Das Observable von getData ist undefined.');
+    }
   }
 
   checkScrollWidth(sliderElement: HTMLElement, index: number) {

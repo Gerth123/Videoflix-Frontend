@@ -33,7 +33,7 @@ class MockRoutingService {
   }
 }
 
-fdescribe('VideoPlayerComponent', () => {
+describe('VideoPlayerComponent', () => {
   let component: VideoPlayerComponent;
   let fixture: ComponentFixture<VideoPlayerComponent>;
   let videoElement: jasmine.SpyObj<HTMLVideoElement> = jasmine.createSpyObj(
