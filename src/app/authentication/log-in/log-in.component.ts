@@ -39,14 +39,12 @@ export class LogInComponent {
   }
 
   ngOnInit(): void {
-    if (!this.logInForm) return; // Falls das Formular nicht existiert, nichts tun
-
+    if (!this.logInForm) return;
     if (this.routingService.emailFromDashboard) {
       this.logInForm
         .get('email')
         ?.setValue(this.routingService.emailFromDashboard);
     }
-
     const rememberMe = localStorage.getItem('remember-me') === 'true';
     const email = localStorage.getItem('auth-user');
     if (rememberMe && email) {

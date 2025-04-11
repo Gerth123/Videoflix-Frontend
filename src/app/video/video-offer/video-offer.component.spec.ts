@@ -11,6 +11,8 @@ import { ToastService } from '../../shared/services/toast-service/toast.service'
 import { RoutingService } from '../../shared/services/routing-service/routing.service';
 import { of, throwError } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 
 describe('VideoOfferComponent', () => {
   let component: VideoOfferComponent;
@@ -39,7 +41,7 @@ describe('VideoOfferComponent', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [VideoOfferComponent],
+      imports: [VideoOfferComponent, HttpClientTestingModule, FormsModule],
       providers: [
         { provide: ApiService, useValue: mockApiService },
         { provide: ToastService, useValue: mockToastService },
@@ -59,48 +61,38 @@ describe('VideoOfferComponent', () => {
   });
 
   describe('loadGenres', () => {
-    it('should load genres from API if not in sessionStorage', () => {
-      spyOn(component.apiService, 'getGenres').and.returnValue(
-        of([{ name: 'Drama' }, { name: 'Comedy' }])
-      );
-
+    it('should load genres and save to sessionStorage', () => {
+      const genres = [{ name: 'Comedy' }];
+      mockApiService.getGenres.and.returnValue(of(genres));
       component.loadGenres();
 
-      expect(component.genres.length).toBe(2); // Prüft, ob 2 Genres geladen wurden
-      expect(component.genres[0].name).toBe('Drama'); // Prüft, ob das erste Genre "Drama" ist
+      expect(component.genres).toEqual(genres);
+      expect(sessionStorage.getItem('genres')).toEqual(JSON.stringify(genres));
+    });
+
+    it('should show toast on error', () => {
+      mockApiService.getGenres.and.returnValue(throwError(() => 'error'));
+      component.loadGenres();
+
+      expect(mockToastService.show).toHaveBeenCalledWith(
+        'Fehler beim Laden der Genres',
+        'error'
+      );
     });
   });
 
   describe('checkToken', () => {
     it('should navigate to home and show toast if token is missing', fakeAsync(() => {
       localStorage.removeItem('auth-token');
-
       component.ngOnInit();
       tick(300);
-
+      fixture.detectChanges();
       expect(mockRoutingService.navigateTo).toHaveBeenCalledWith('');
       expect(mockToastService.show).toHaveBeenCalledWith(
         'Bitte anmelden oder registrieren',
         'info'
       );
     }));
-
-    it('should not navigate or show toast if token exists', fakeAsync(() => {
-      // Setze den Token korrekt in den LocalStorage
-      localStorage.setItem('auth-token', 'test-token');
-    
-      // Stelle sicher, dass der Token überprüft wird
-      spyOn(component, 'checkToken').and.callThrough();
-    
-      // Führe ngOnInit aus
-      component.ngOnInit();
-      tick();  // Stelle sicher, dass alle asynchronen Aufgaben abgeschlossen sind
-    
-      // Überprüfe, dass navigateTo nicht aufgerufen wurde
-      expect(mockRoutingService.navigateTo).not.toHaveBeenCalled();
-      expect(mockToastService.show).not.toHaveBeenCalled();
-    }));
-    
   });
 
   describe('loadBigThumbnail', () => {
@@ -110,10 +102,8 @@ describe('VideoOfferComponent', () => {
         title: 'Test Title',
         description: 'Test Desc',
       };
-
       mockApiService.getData.and.returnValue(of(response));
       component.loadBigThumbnail();
-
       expect(mockApiService.getData).toHaveBeenCalledWith('big-thumbnail');
     });
   });

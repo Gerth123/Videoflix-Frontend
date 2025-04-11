@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 export class NetworkService {
 
   getNetworkSpeed(): string {
-    if ('connection' in navigator) {
-      const connection = (navigator as any).connection;
-      const downlink = connection.downlink;
-
+    const connection = (navigator as any).connection;
+    const downlink = connection?.downlink;
+  
+    if (downlink !== undefined) {
       if (downlink < 0.5) return '144p';
       if (downlink < 1) return '240p';
       if (downlink < 2.5) return '360p';
@@ -17,6 +17,7 @@ export class NetworkService {
       if (downlink < 8) return '720p';
       return '1080p';
     }
+  
     return 'auto';
-  }
+  }  
 }

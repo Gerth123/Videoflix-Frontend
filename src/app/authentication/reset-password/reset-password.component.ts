@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { ApiService } from '../../shared/services/api-service/api.service';
@@ -25,7 +24,6 @@ export class ResetPasswordComponent {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
     private toastService: ToastService,

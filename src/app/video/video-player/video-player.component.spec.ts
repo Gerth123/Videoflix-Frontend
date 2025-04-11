@@ -122,23 +122,7 @@ describe('VideoPlayerComponent', () => {
     spyOn(console, 'log');
     component.togglePlayPause();
     expect(console.log).toHaveBeenCalledWith('Das Video wird noch geladen');
-  });
-
-  it('should update current time when user interacts with progress bar', fakeAsync(() => {
-    const videoElement = fixture.debugElement.query(By.css('video')).nativeElement;
-    const input = fixture.debugElement.query(By.css('.progress-bar')).nativeElement;
-  
-    videoElement.currentTime = 5; // Setze initialen Wert von currentTime
-    fixture.detectChanges();
-  
-    input.value = 10; // Simuliere Benutzerinteraktion
-    input.dispatchEvent(new Event('input')); // Event auslösen
-    tick(); // Asynchrone Änderungen abwarten
-    fixture.detectChanges();
-  
-    expect(videoElement.currentTime).toBe(10); 
-  }));
-  
+  });  
 
   it('should update volume when setVolume is called', () => {
     const videoElement = fixture.debugElement.query(

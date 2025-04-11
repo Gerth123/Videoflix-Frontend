@@ -20,10 +20,23 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('videoflix_frontend');
   });
 
-  it('should render title', () => {
+  it('should render app-toast component', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, videoflix_frontend');
-  });
+    expect(compiled.querySelector('app-toast')).toBeTruthy();
+  });  
+
+  it('should render router-outlet', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
+  });  
+
+  it('should initialize title property correctly', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.title).toBe('videoflix_frontend');
+  }); 
 });

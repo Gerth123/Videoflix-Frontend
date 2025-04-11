@@ -2,13 +2,18 @@
   <app-header [isLoggedIn]="false" [videoOfferRoute]="false"></app-header>
   <div class="dashboard-container">
     <h2>Movies, TV shows, and more</h2>
-    <span>
-        Enter your email to create or restart your subscription.
-    </span>
+    <span> Enter your email to create or restart your subscription. </span>
     <form [formGroup]="dashboardForm" (ngSubmit)="onSubmit()">
-      <input type="email" formControlName="email" placeholder="Email Address">
-      <button type="submit"  [ngClass]="{'disabled-button': dashboardForm.invalid, 'active-button': dashboardForm.valid}">Sign Up ></button>
-      <!-- [disabled]="dashboardForm.invalid" -->
+      <input type="email" formControlName="email" placeholder="Email Address" />
+      <button
+        type="submit"
+        [ngClass]="{
+          'disabled-button': dashboardForm.invalid,
+          'active-button': dashboardForm.valid
+        }"
+      >
+        Sign Up >
+      </button>
     </form>
   </div>
   <app-footer></app-footer>
