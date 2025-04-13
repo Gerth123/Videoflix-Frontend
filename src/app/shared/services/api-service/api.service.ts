@@ -43,7 +43,6 @@ export class ApiService {
     return localStorage.getItem('auth-user-id');
   }
 
-  // Header erstellen
   private createHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     const token = this.getAuthToken();
@@ -53,7 +52,6 @@ export class ApiService {
     return headers;
   }
 
-  // GET-Anfrage
   getData(endpoint: string): Observable<any> {
     return this.http.get(`${this.API_BASE_URL}${endpoint}`, {
       headers: this.createHeaders(),
@@ -64,7 +62,6 @@ export class ApiService {
     return firstValueFrom(this.http.get(`${this.API_BASE_URL}${endpoint}`));
   }
 
-  // POST-Anfrage (FormData)
   postData(endpoint: string, data: FormData): Observable<any> {
     return this.http.post(`${this.API_BASE_URL}${endpoint}`, data, {
       headers: this.createHeaders(),

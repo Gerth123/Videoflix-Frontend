@@ -10,6 +10,7 @@ import { AccountConfirmedComponent } from './authentication/account-confirmed/ac
 import { ActivationFailedComponent } from './authentication/activation-failed/activation-failed.component';
 import { VideoPlayerComponent } from './video/video-player/video-player.component';
 import { ResetPasswordComponent } from './authentication/reset-password/reset-password.component';
+import { VideoDescriptionComponent } from './video/video-description/video-description.component';
 
 
 export const routes: Routes = [
@@ -19,30 +20,11 @@ export const routes: Routes = [
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'account-confirmed', component: AccountConfirmedComponent }, 
     { path: 'activation-failed', component: ActivationFailedComponent }, 
-    // { path: 'new-password', component: NewPasswordComponent }, 
     { path: 'sign-up', component: SignUpComponent },
     { path: 'video-offer', component: VideoOfferComponent },
+    { path: 'video-description', component: VideoDescriptionComponent },
     { path: 'video-player/:videoId', component: VideoPlayerComponent },
     { path: 'video-player', component: VideoPlayerComponent },
-
-
-    
-  
-    // {
-    //   path: 'main/:uid',
-    //   component: MainComponent,
-    //   children: [
-    //     { path: 'channel/:channelId', component: MainMessageAreaComponent, children: [
-    //       {
-    //         path: 'thread/:messageId',
-    //         component: ThreadComponent, 
-    //       },
-    //     ]},
-    //     { path: 'privateChat/:privateChatId', component: PrivateChatComponent },
-    //     { path: '', component: NewMessagePlaceholderComponent },
-    //   ],
-    // },
-    
     { path: 'imprint', component: ImprintComponent },
     { path: 'privacy-policy', component: PrivacyPolicyComponent },
   ];

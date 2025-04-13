@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 export class RoutingService {
   emailFromDashboard: string = '';
   poster: string = '';
+  bigThumbnailUrl: string = '';
+  bigThumbnailTitle: string = '';
+  bigThumbnailDescription: string = '';
 
   constructor(private router: Router) {}
 
@@ -22,6 +25,12 @@ export class RoutingService {
   setPoster(poster: string): void {
     this.poster = poster;
     localStorage.setItem('poster', poster);
+  }
+
+  setMobilePoster(video: any): void {
+    this.bigThumbnailDescription = video.description;
+    this.bigThumbnailTitle = video.title;
+    this.bigThumbnailUrl = video.thumbnailUrl;
   }
 
   getPoster(): string {

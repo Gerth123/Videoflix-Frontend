@@ -13,6 +13,7 @@ import { ApiService } from '../../shared/services/api-service/api.service';
 import { ToastService } from '../../shared/services/toast-service/toast.service';
 import { RoutingService } from '../../shared/services/routing-service/routing.service';
 import { NgFor, NgIf } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-video-offer',
@@ -30,13 +31,15 @@ export class VideoOfferComponent {
   bigThumbnailUrl: string = '/api/big-thumbnail';
   bigThumbnailTitle: string = '';
   bigThumbnailDescription: string = '';
+  isMobile: boolean = false;
   public API_BASE_URL: string = 'http://127.0.0.1:8000';
 
   constructor(
     public apiService: ApiService,
     private toastService: ToastService,
     private routingService: RoutingService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -51,6 +54,10 @@ export class VideoOfferComponent {
       await this.loadGenres();
     }
     await this.loadBigThumbnail();
+    this.breakpointObserver.observe([Breakpoints.Handset])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+      });
   }
 
   ngAfterViewInit() {
@@ -143,6 +150,12 @@ export class VideoOfferComponent {
       console.log('Kein Video ID gefunden');
     }
   }
+
+  navigateToVideoDescription(video: any) {
+    sessionStorage.setItem('videoData', JSON.stringify(video));
+    this.routingService.navigateTo(`/video-description`);
+  }
+  
 
   scrollLeft(slider: HTMLElement) {
     slider.scrollBy({ left: -300, behavior: 'smooth' });

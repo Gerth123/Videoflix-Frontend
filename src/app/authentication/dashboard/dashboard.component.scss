@@ -28,6 +28,14 @@ h2 {
   padding: 0;
 }
 
+h3 {
+  display: none;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--white-color);
+  padding: 0;
+}
+
 span {
   color: var(--white-color);
   font-size: 18px;
@@ -65,5 +73,48 @@ button {
   &:hover {
     filter: brightness(1.2);
     cursor: pointer;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-container {
+    gap: 16px;
+  }
+
+  h2 {
+    font-size: 40px;
+    max-width: 90%;
+  }
+
+  h3 {
+    display: flex;
+    max-width: 90%;
+  }
+
+  span {
+    font-size: 16px;
+    max-width: 90%;
+  }
+
+  form {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    font-size: 18px;
+    width: 140px;
+  }
+}
+
+@media (max-width: 450px) {
+  form {
+    width: 100%;
+  }
+
+  input {
+    min-width: unset;
+    width: 90%;
   }
 }

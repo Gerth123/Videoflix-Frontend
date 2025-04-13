@@ -78,6 +78,7 @@ video {
   bottom: 0px;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
@@ -102,20 +103,34 @@ app-header {
 .title {
   color: var(--white-color);
   font-size: 20px;
-  align-items: center;
+  display: block;
+  text-align: center;
   justify-content: center;
-  display: flex;
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .controls-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
+}
+
+.controls-container-mobile {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  width: 100%;
+  top: 42%;
 }
 
 .controls {
   display: flex;
-  width: 30%;
 }
 
 .controls:last-of-type {
@@ -130,6 +145,7 @@ app-header {
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
+  gap: 0.5rem;
 }
 
 .volume-bar-container {
@@ -228,6 +244,14 @@ app-header {
   cursor: pointer;
 }
 
+.speed-text {
+  font-size: 0.9rem;
+  color: white;
+  text-align: center;
+  justify-content: center;
+  margin: 0;
+}
+
 .dropdown {
   position: absolute;
   bottom: 40px;
@@ -254,11 +278,26 @@ app-header {
 @media (min-width: 1600px) {
   .progress-wrapper {
     width: 98%;
-  }  
+  }
 }
 
 @media (min-width: 3000px) {
   .progress-wrapper {
     width: 99%;
-  }  
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .controls-overlay {
+    padding: 0.25rem 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 80%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .controls:last-of-type {
+    justify-content: center;
+  }
+
+  .control-button {
+    padding: 0.25rem 1rem;
+  }
 }

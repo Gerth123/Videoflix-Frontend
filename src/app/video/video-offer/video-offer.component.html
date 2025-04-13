@@ -28,18 +28,17 @@
             *ngFor="let movie of genre.movies"
             class="thumbnail-overlay-wrapper"
           >
-            <img
+            <img *ngIf="!isMobile"
               [src]="API_BASE_URL + movie.thumbnailUrl"
               alt="Thumbnail"
               (click)="navigateToVideoPlayer(movie.thumbnailUrl)"
             />
+            <img *ngIf="isMobile" [src]="API_BASE_URL + movie.thumbnailUrl" alt="Thumbnail" (click)="navigateToVideoDescription(movie)">
             <div class="overlay">
               <p class="overlay-title">{{ movie.title }}</p>
             </div>
           </div>
         </div>
-
-        <!-- Zeige linken Pfeil nur, wenn nicht am Anfang -->
         <button
           *ngIf="showLeftArrowList[i]"
           class="prev"
@@ -47,8 +46,6 @@
         >
           ‹
         </button>
-
-        <!-- Zeige rechten Pfeil nur, wenn nicht am Ende -->
         <button
           *ngIf="showRightArrowList[i]"
           class="next"
@@ -60,5 +57,5 @@
     </div>
   </div>
 
-  <app-footer [videoOfferRoute]="true"></app-footer>
+  <app-footer [videoOfferRoute]="true" *ngIf="!loading"></app-footer>
 </section>

@@ -4,6 +4,7 @@ header {
   align-items: center;
   padding: 4svh 5vw;
   width: 100vw;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 75%, rgba(0, 0, 0, 0) 100%);
 }
 
 .video-offer-header {
@@ -15,6 +16,9 @@ header {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+
   img {
     height: 32px;
   }
@@ -22,6 +26,14 @@ header {
   cursor: pointer;
 }
 
+.video-title {
+  color: var(--white-color);
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding-left: 10px;
+}
 
 .log-in {
   span {

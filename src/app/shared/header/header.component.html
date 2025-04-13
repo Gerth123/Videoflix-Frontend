@@ -1,9 +1,10 @@
 <header [ngClass]="{ 'video-offer-header': videoOfferRoute || videoPlayerRoute }">
-  <div class="logo" *ngIf="!videoOfferRoute && !videoPlayerRoute" (click)="navigateTo('/') ">
+  <div class="logo" *ngIf="!videoOfferRoute && !videoPlayerRoute && !isMobile || legalInformationRoute" (click)="navigateTo('/') ">
     <img src="assets/icons/logo.svg" alt="Logo" />
   </div>
-  <div class="logo" *ngIf="videoOfferRoute">
+  <div class="logo" *ngIf="videoOfferRoute || isMobilePlayer && !legalInformationRoute">
     <img src="assets/icons/small_logo.svg" alt="" />
+    <span class="video-title" *ngIf="videoPlayerRoute && isMobilePlayer">{{ videoTitle }}</span>
   </div>
   <div class="log-in" *ngIf="!isLoggedIn && !legalInformationRoute">
     <span (click)="navigateTo('/log-in')">Log in</span>
@@ -12,7 +13,7 @@
     <img src="assets/icons/log_out.svg" alt="Log out" />
     <span (click)="navigateTo('log-in')">Log out</span>
   </div>
-  <div class="go-back" *ngIf="legalInformationRoute || videoPlayerRoute" (click)="goBack()">
+  <div class="go-back" *ngIf="legalInformationRoute || videoPlayerRoute && !isMobilePlayer" (click)="goBack()">
     <svg
       width="32"
       height="32"
@@ -26,7 +27,10 @@
       />
     </svg>
   </div>
-  <div class="logo-video-player" *ngIf="videoPlayerRoute">
-    <img src="assets/icons/small_logo.svg" alt="" />
+  <div class="close-button" *ngIf="videoPlayerRoute && isMobilePlayer" (click)="goBack()">
+    <img src="assets/icons/close_small.svg" alt="Close" />
+  </div>
+  <div class="logo-video-player" *ngIf="videoPlayerRoute && !isMobilePlayer">
+    <img src="assets/icons/small_logo.svg" alt="Logo" />
   </div>
 </header>

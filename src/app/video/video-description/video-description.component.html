@@ -1,0 +1,25 @@
+<section>
+  <app-header
+    [isLoggedIn]="true"
+    [videoOfferRoute]="true"
+    [videoPlayerRoute]="false"
+  ></app-header>
+  <div *ngIf="!loading" class="big-thumbnail-container">
+    <img [src]="API_BASE_URL + bigThumbnailUrl" alt="Big Thumbnail" />
+    <div class="description-container">
+      <h2>{{ bigThumbnailTitle }}</h2>
+      <p>{{ bigThumbnailDescription }}</p>
+      <button (click)="navigateToVideoPlayer(bigThumbnailUrl)">
+        <img
+          src="assets/icons/play_arrow.svg"
+          alt="Play Movie"
+          class="play-icon"
+        /><span class="play-text">Play</span>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading-screen">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+</section>

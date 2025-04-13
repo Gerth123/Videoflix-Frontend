@@ -42,6 +42,9 @@ export class VideoPlayerComponent {
   isControlsVisible: boolean = true;
   timeout: any;
   fullscreenChangeHandler: any;
+  isMobilePlayer: boolean = /iPhone|iPad|iPod|Android/i.test(
+    navigator.userAgent
+  );
 
   constructor(
     private networkService: NetworkService,
@@ -115,6 +118,34 @@ export class VideoPlayerComponent {
     videoElement.addEventListener('loadedmetadata', () => {
       this.duration = Math.floor(videoElement.duration);
     });
+    if (this.isMobilePlayer) {
+      setTimeout(() => {
+        this.requestFullscreenAndLandscape();
+      }, 500);
+    }
+  }
+
+  detectMobileDevice(): boolean {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+
+  requestFullscreenAndLandscape() {
+    const container: HTMLElement = this.videoContainer.nativeElement;
+
+    if (container.requestFullscreen) {
+      container
+        .requestFullscreen()
+        .then(() => {
+          if ((screen.orientation as any).lock) {
+            (screen.orientation as any).lock('landscape').catch((err: any) => {
+              console.warn('Konnte Bildschirm nicht drehen:', err);
+            });
+          }
+        })
+        .catch((err) => {
+          console.warn('Fullscreen-Fehler:', err);
+        });
+    }
   }
 
   ngOnDestroy(): void {
@@ -218,18 +249,22 @@ export class VideoPlayerComponent {
     this.isControlsVisible = true;
     const header = document.querySelector('app-header');
     const controls = document.querySelector('.controls-overlay');
+    const middlecontrols = document.querySelector('.controls-container-mobile');
 
     if (header) header.classList.remove('hidden');
     if (controls) controls.classList.remove('hidden');
+    if (middlecontrols) middlecontrols.classList.remove('hidden');
   }
 
   hideControls() {
     this.isControlsVisible = false;
     const header = document.querySelector('app-header');
     const controls = document.querySelector('.controls-overlay');
+    const middlecontrols = document.querySelector('.controls-container-mobile');
 
     if (header) header.classList.add('hidden');
     if (controls) controls.classList.add('hidden');
+    if (middlecontrols) middlecontrols.classList.add('hidden');
   }
 
   showMouse() {
@@ -250,13 +285,28 @@ export class VideoPlayerComponent {
       console.log('Das Video wird noch geladen');
       return;
     }
+    if (this.isMobilePlayer && !video.paused) { this.showControls() }
+    else if (this.isMobilePlayer && video.paused) this.hideControls();
     if (Math.floor(video.currentTime) >= Math.floor(video.duration)) {
       video.currentTime = 0;
     }
     if (video.paused) video.play();
     else video.pause();
 
+    
+
     this.isPlaying = !video.paused;
+  }
+
+  togglePlayPauseVideo() {
+    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
+    if (this.loading) {
+      console.log('Das Video wird noch geladen');
+      return;
+    }
+    if (this.isMobilePlayer && !video.paused) { this.showControls(); return; }
+    else if (this.isMobilePlayer && video.paused) this.hideControls();
+   this.togglePlayPause();
   }
 
   updateTime() {

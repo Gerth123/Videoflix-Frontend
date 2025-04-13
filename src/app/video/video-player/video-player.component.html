@@ -4,7 +4,6 @@
     [videoOfferRoute]="false"
     [videoPlayerRoute]="true"
   ></app-header>
-
   <div
     class="video-container"
     #videoContainer
@@ -20,7 +19,7 @@
       id="my-video"
       preload="auto"
       [poster]="poster"
-      (click)="togglePlayPause()"
+      (click)="togglePlayPauseVideo()"
       (loadedmetadata)="onMetadataLoaded()"
       (timeupdate)="onTimeUpdate()"
     >
@@ -28,7 +27,7 @@
       Your browser does not support the video tag.
     </video>
 
-    <div class="controls-overlay">
+    <div class="controls-overlay" *ngIf="!isMobilePlayer">
       <div class="progress-wrapper">
         <input
           class="progress-bar"
@@ -81,7 +80,7 @@
               class="speed-icon"
               (click)="toggleDropdown()"
             />
-
+            <p class="speed-text" *ngIf="isMobilePlayer">Speed</p>
             <div *ngIf="dropdownVisible" class="dropdown">
               <div (click)="setSpeed(0.5)" class="dropdown-option">0.5x</div>
               <div (click)="setSpeed(1)" class="dropdown-option">
@@ -101,6 +100,54 @@
               alt="Fullscreen Toggle"
             />
           </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-container-mobile" *ngIf="isMobilePlayer">
+      <div class="controls">
+        <button class="control-button" (click)="rewind()">
+          <img src="assets/icons/rewind.svg" alt="Rewind 10s" />
+        </button>
+        <button class="control-button" (click)="togglePlayPause()">
+          <img *ngIf="!isPlaying" src="assets/icons/play.svg" alt="Play" />
+          <img *ngIf="isPlaying" src="assets/icons/pause.png" alt="Pause" />
+        </button>
+        <button class="control-button" (click)="fastForward()">
+          <img src="assets/icons/forward.svg" alt="Forward 10s" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-overlay" *ngIf="isMobilePlayer">
+    <div class="progress-wrapper">
+      <input
+        class="progress-bar"
+        type="range"
+        min="0"
+        [max]="duration"
+        [value]="currentTime"
+        (input)="seekVideo($event)"
+      />
+      <div class="time-display">
+        {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+      </div>
+    </div>
+    <div class="controls">
+      <div class="control-button">
+        <img
+          src="assets/icons/speed.svg"
+          alt="Speed"
+          class="speed-icon"
+          (click)="toggleDropdown()"
+        />
+        <span class="speed-text" (click)="toggleDropdown()">Speed</span>
+        <div *ngIf="dropdownVisible" class="dropdown">
+          <div (click)="setSpeed(0.5)" class="dropdown-option">0.5x</div>
+          <div (click)="setSpeed(1)" class="dropdown-option">1x (Normal)</div>
+          <div (click)="setSpeed(1.5)" class="dropdown-option">1.5x</div>
+          <div (click)="setSpeed(2)" class="dropdown-option">2x</div>
         </div>
       </div>
     </div>

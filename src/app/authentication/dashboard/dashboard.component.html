@@ -2,6 +2,7 @@
   <app-header [isLoggedIn]="false" [videoOfferRoute]="false"></app-header>
   <div class="dashboard-container">
     <h2>Movies, TV shows, and more</h2>
+    <h3>Watch whenever you want wherever you want</h3>
     <span> Enter your email to create or restart your subscription. </span>
     <form [formGroup]="dashboardForm" (ngSubmit)="onSubmit()">
       <input type="email" formControlName="email" placeholder="Email Address" />
