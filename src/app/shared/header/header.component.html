@@ -1,5 +1,5 @@
 <header [ngClass]="{ 'video-offer-header': videoOfferRoute || videoPlayerRoute }">
-  <div class="logo" *ngIf="!videoOfferRoute && !videoPlayerRoute">
+  <div class="logo" *ngIf="!videoOfferRoute && !videoPlayerRoute" (click)="navigateTo('/') ">
     <img src="assets/icons/logo.svg" alt="Logo" />
   </div>
   <div class="logo" *ngIf="videoOfferRoute">

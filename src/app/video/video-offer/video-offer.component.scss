@@ -1,3 +1,7 @@
+:host {
+  width: 100%;
+}
+
 section {
   width: 100%;
   min-height: 100svh;
@@ -5,6 +9,7 @@ section {
   flex-direction: column;
   background-color: var(--black-color);
   padding-bottom: 5svh;
+  align-items: center;
 }
 
 .big-thumbnail-container {
@@ -119,11 +124,16 @@ section {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .genres-container {
+  max-width: 1600px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -161,7 +171,7 @@ section {
       object-fit: cover;
       cursor: pointer;
       transition: transform 0.3s ease-in-out;
-      transform-origin: center center; 
+      transform-origin: center center;
       will-change: transform;
 
       &:hover {
@@ -222,6 +232,7 @@ section {
     position: absolute;
     bottom: 0;
     height: 3svh;
+    max-height: 25px;
     width: 220px;
     background: rgba(0, 0, 0, 0.7);
     text-align: center;
@@ -244,14 +255,46 @@ section {
     opacity: 1;
     transform: scale(1.1);
   }
+}
 
-  @media (max-width: 768px) {
-    .overlay {
-      opacity: 1;
+@media (min-width: 1600px) {
+  .big-thumbnail-container {
+    max-height: 800px;
+
+    > img {
+      max-height: 800px;
     }
 
-    img {
-      transform: none !important;
+    div {
+      background: unset !important;
     }
+  }
+
+  .description-container {
+    left: 20% !important;
+  }
+}
+
+@media (min-width: 3000px) {
+  .big-thumbnail-container {
+    max-height: 1000px;
+
+    > img {
+      max-height: 1000px;
+    }
+  }
+
+  .description-container {
+    left: 28% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    opacity: 1;
+  }
+
+  img {
+    transform: none !important;
   }
 }
