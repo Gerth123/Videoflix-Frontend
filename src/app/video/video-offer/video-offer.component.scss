@@ -315,3 +315,14 @@ section {
     padding-bottom: 0;
   }
 }
+
+@media (pointer: coarse) and (orientation: landscape) {
+  section {
+    padding-top: 15svh;
+    padding-bottom: 5svh;
+  }
+
+  .big-thumbnail-container {
+    display: none;
+  }
+}
