@@ -22,4 +22,4 @@ Dies ist das Frontend der Videoflix-App, gebaut mit **Angular**. Die Anwendung b
 
 ```bash
 npm install
-ng serve
+ng serve --open
