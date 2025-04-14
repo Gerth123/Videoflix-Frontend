@@ -8,6 +8,10 @@ import { HeaderComponent } from '../../shared/header/header.component';
   styleUrl: './privacy-policy.component.scss',
 })
 export class PrivacyPolicyComponent {
+  /**
+   * Scrolls to the given anchor id on the page.
+   * @param anchor the id of the element to scroll to.
+   */
   scrollTo(anchor: string) {
     const el = document.getElementById(anchor);
     if (el) {

@@ -11,8 +11,12 @@ export class ActivationFailedComponent {
 
   constructor(private routingService: RoutingService) { }
 
+  /**
+   * Navigates to the specified route using the RoutingService.
+   *
+   * @param route The route to navigate to.
+   */
   navigateTo(route: string): void {
     this.routingService.navigateTo(route);
   }
-
 }

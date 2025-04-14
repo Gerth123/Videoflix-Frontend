@@ -25,6 +25,10 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   export class ToastComponent {
     constructor(public toastService: ToastService) {}
 
+    /**
+     * Hides the toast component and removes it from the list of toasts after 500ms.
+     * @param toast The toast to be removed.
+     */
     hideToast(toast: any) {
       toast.state = 'out'; 
       setTimeout(() => {

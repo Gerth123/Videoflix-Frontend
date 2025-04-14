@@ -20,12 +20,12 @@ export class VideoDescriptionComponent {
 
   private routerSub = new Subscription();
 
-  constructor(
-    private routingService: RoutingService,
-    private cdr: ChangeDetectorRef,
-    private router: Router
-  ) {}
+  constructor(private routingService: RoutingService, private cdr: ChangeDetectorRef, private router: Router) {}
 
+  /**
+   * OnInit lifecycle hook. If video data is stored in session storage, it's loaded and displayed.
+   * Otherwise, a warning is logged.
+   */
   ngOnInit(): void {
     const storedVideo = sessionStorage.getItem('videoData');
     if (storedVideo) {
@@ -40,6 +40,14 @@ export class VideoDescriptionComponent {
   }
 
 
+  /**
+   * Extracts the videoId from the given thumbnail URL and navigates to the video player
+   * component, passing the videoId as a parameter. The videoId is extracted by using a regex
+   * to find the first group of characters after the last underscore in the thumbnail URL.
+   * If no match is found, a log warning is logged.
+   *
+   * @param videoUrl The thumbnail URL to extract the videoId from.
+   */
   navigateToVideoPlayer(videoUrl: string) {
     const regex = /\/thumbnails\/([^_]+)/;
     const match = videoUrl.match(regex);
@@ -52,6 +60,9 @@ export class VideoDescriptionComponent {
     }
   }
 
+  /**
+   * Clean up router subscription when component is destroyed.
+   */
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
   }

@@ -20,13 +20,30 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ForgotPasswordComponent {
   forgotPasswordForm: FormGroup;
-
+  
+/**
+ * Initializes the ForgotPasswordComponent.
+ *
+ * @param fb - The form builder for creating reactive forms.
+ * @param http - The HTTP client for making HTTP requests.
+ * @param toastService - Service for displaying toast notifications.
+ * @param apiService - Service for making API calls.
+ *
+ * Sets up the forgot password form with email validation.
+ */
   constructor(private fb: FormBuilder, private http: HttpClient, private toastService: ToastService, private apiService: ApiService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
   }
 
+  /**
+   * Handles the submission of the forgot password form.
+   *
+   * Makes a POST request to the password-reset endpoint with the form data.
+   * If the request is successful, displays an info toast notification that an email was sent if the email exists.
+   * If the request fails, displays an error toast notification.
+   */
   onSubmit() {
     this.apiService.postData('auth/password-reset/', this.forgotPasswordForm.value).subscribe({
       next: () => {
@@ -36,5 +53,4 @@ export class ForgotPasswordComponent {
       error: () => this.toastService.show('Fehler beim Zurücksetzen des Passworts.', 'error'),
     });
   }
-  
 }
