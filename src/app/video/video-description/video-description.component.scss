@@ -7,178 +7,172 @@ app-header {
 }
 
 :host {
-    width: 100%;
+  width: 100%;
 }
 
 section {
-    width: 100%;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--black-color);
-    align-items: center;
-    padding-bottom: 10svh;
-    overflow-x: hidden;
-  }
-  
-  .big-thumbnail-container {
-    display: flex;
-    position: relative;
-    overflow: hidden;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-  
-    > img {
-      width: 100%;
-      height: 40svh;
-      object-fit: cover;
-      object-position: bottom;
-      z-index: 0;
-    }
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--black-color);
+  align-items: center;
+  padding-bottom: 10svh;
+  overflow-x: hidden;
+}
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 40svh;
-      width: 100%;
-      background: linear-gradient(
-        to top,
-        rgba(20, 20, 20, 1) 0%,
-        rgba(20, 20, 20, 0.7) 40%,
-        rgba(20, 20, 20, 0.4) 70%,
-        rgba(20, 20, 20, 0) 100%
-      );
-      z-index: 1;
-      pointer-events: none;
-    }
-  
-    .description-container {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 15px;
-      left: 0;
-      height: 100%;
-      width: 90%;
-      color: var(--white-color);
-      transition: background 0.5s ease-in-out;
-      border-radius: 8px;
-  
-      &:hover h2,
-      &:hover p {
-        text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.8);
-      }
-  
-      h2 {
-        margin-block: 0;
-        max-width: 300px;
-        font-size: 64px;
-        line-height: 1;
-      }
-  
-      p {
-        margin: 0;
-        max-width: 300px;
-      }
-  
-      button {
-        background-color: var(--blue-color);
-        padding: 12px 24px;
-        gap: 4px;
-        border-radius: 40px;
-        margin-top: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.3s ease;
-      }
-  
-      button:hover {
-        cursor: pointer;
-        background-color: #1c2bbf;
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-    }
+.big-thumbnail-container {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+
+  > img {
+    width: 100%;
+    height: 40svh;
+    object-fit: cover;
+    object-position: bottom;
+    z-index: 0;
   }
-  
-  .play-icon {
-    width: 11px;
-    height: 13px;
-  }
-  
-  .play-text {
-    transition: none;
-  }
-  
-  .loading-screen {
-    position: fixed;
+
+  &::before {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
+    height: 40svh;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
+    background: linear-gradient(to top, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0.7) 40%, rgba(20, 20, 20, 0.4) 70%, rgba(20, 20, 20, 0) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .description-container {
+    position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    z-index: 9999;
-  }
-  
-  .spinner {
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid white;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    left: 0;
+    height: 100%;
+    width: 90%;
+    color: var(--white-color);
+    transition: background 0.5s ease-in-out;
+    border-radius: 8px;
+
+    &:hover h2,
+    &:hover p {
+      text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.8);
     }
-    100% {
-      transform: rotate(360deg);
+
+    h2 {
+      margin-block: 0;
+      max-width: 300px;
+      font-size: 64px;
+      line-height: 1;
+      word-wrap: break-word;
+    }
+
+    p {
+      margin: 0;
+      max-width: 300px;
+    }
+
+    button {
+      background-color: var(--blue-color);
+      padding: 12px 24px;
+      gap: 4px;
+      border-radius: 40px;
+      margin-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      cursor: pointer;
+      background-color: #1c2bbf;
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
   }
-  
-  @media (min-width: 2400px) {
-    .big-thumbnail-container {
+}
+
+.play-icon {
+  width: 11px;
+  height: 13px;
+}
+
+.play-text {
+  transition: none;
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 2400px) {
+  .big-thumbnail-container {
+    max-height: 800px;
+
+    > img {
       max-height: 800px;
-  
-      > img {
-        max-height: 800px;
-      }
-  
-      div {
-        background: unset !important;
-      }
     }
-  
-    .description-container {
-      left: 20% !important;
+
+    div {
+      background: unset !important;
     }
   }
-  
-  @media (min-width: 3000px) {
-    .big-thumbnail-container {
+
+  .description-container {
+    left: 20% !important;
+  }
+}
+
+@media (min-width: 3000px) {
+  .big-thumbnail-container {
+    max-height: 1000px;
+
+    > img {
       max-height: 1000px;
-  
-      > img {
-        max-height: 1000px;
-      }
-    }
-  
-    .description-container {
-      left: 28% !important;
     }
   }
-  
+
+  .description-container {
+    left: 28% !important;
+  }
+}
