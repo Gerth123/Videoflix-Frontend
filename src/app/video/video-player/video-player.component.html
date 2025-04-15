@@ -75,10 +75,29 @@
         <div class="controls">
           <div class="control-button">
             <img
+              src="assets/icons/monitor.png"
+              alt="Quality"
+              class="speed-icon"
+              (click)="toggleDropdown('quality')"
+            />
+            <p class="speed-text" *ngIf="isMobilePlayer">Quality</p>
+            <div *ngIf="qualityDropdownVisible" class="dropdown">
+              <div
+              *ngFor="let quality of availableQualities"
+              class="dropdown-option"
+              (click)="setQuality(quality)"
+            >
+              {{ quality }}
+            </div>
+            <div class="dropdown-option" (click)="setQuality('auto')">Auto</div>
+            </div>
+          </div>
+          <div class="control-button">
+            <img
               src="assets/icons/speed.svg"
               alt="Speed"
               class="speed-icon"
-              (click)="toggleDropdown()"
+              (click)="toggleDropdown('speed')"
             />
             <p class="speed-text" *ngIf="isMobilePlayer">Speed</p>
             <div *ngIf="dropdownVisible" class="dropdown">
@@ -140,9 +159,9 @@
           src="assets/icons/speed.svg"
           alt="Speed"
           class="speed-icon"
-          (click)="toggleDropdown()"
+          (click)="toggleDropdown('speed')"
         />
-        <span class="speed-text" (click)="toggleDropdown()">Speed</span>
+        <span class="speed-text" (click)="toggleDropdown('speed')">Speed</span>
         <div *ngIf="dropdownVisible" class="dropdown">
           <div (click)="setSpeed(0.5)" class="dropdown-option">0.5x</div>
           <div (click)="setSpeed(1)" class="dropdown-option">1x (Normal)</div>

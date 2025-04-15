@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NetworkService } from '../../shared/services/network-service/network.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,7 +10,7 @@ import { RoutingService } from '../../shared/services/routing-service/routing.se
 
 @Component({
   selector: 'app-video-player',
-  imports: [HeaderComponent, FormsModule, NgIf],
+  imports: [HeaderComponent, FormsModule, NgIf, NgFor],
   templateUrl: './video-player.component.html',
   styleUrl: './video-player.component.scss',
 })
@@ -28,6 +28,8 @@ export class VideoPlayerComponent {
   volume: number = 1;
   videoSpeed: number = 1;
   dropdownVisible: boolean = false;
+  availableQualities: string[] = [];
+  qualityDropdownVisible: boolean = false;
   private connectionListener: any;
   loading: boolean = true;
   poster = 'http://127.0.0.1:8000/media/thumbnails/19.jpg';
@@ -36,6 +38,7 @@ export class VideoPlayerComponent {
   timeout: any;
   fullscreenChangeHandler: any;
   isMobilePlayer: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  videoData: any = {};
 
   constructor(
     private networkService: NetworkService,
@@ -241,17 +244,67 @@ export class VideoPlayerComponent {
     const videoDetail = videoBaseUrl + this.videoId;
     this.apiService.getData(videoDetail).subscribe(
       (response) => {
-        const videoData = Array.isArray(response) ? response[0] : response;
-        this.title = videoData.title;
-        const selectedQuality = this.getAvailableQuality(videoData);
-        if (selectedQuality && videoData[selectedQuality]) {
-          this.applyVideoSource(videoData[selectedQuality]);
+        this.videoData = Array.isArray(response) ? response[0] : response;
+        this.extractAvailableQualities(this.videoData);
+        this.title = this.videoData.title;
+        const selectedQuality = this.getAvailableQuality(this.videoData);
+        if (selectedQuality && this.videoData[selectedQuality]) {
+          this.applyVideoSource(this.videoData[selectedQuality]);
         } else {
           this.handleMissingQuality();
         }
       },
       (error) => this.handleApiError(error),
     );
+  }
+
+  /**
+   * Extracts and sorts the available video qualities from the given video object.
+   *
+   * The method identifies keys in the video object that match the pattern `video_<quality>p`
+   * and have a truthy value, where `<quality>` is a number representing the video resolution.
+   * It then extracts the resolution part, sorts the list of resolutions in ascending order,
+   * and assigns it to `availableQualities`.
+   *
+   * @param video An object containing video data with potential quality-specific keys.
+   */
+
+  extractAvailableQualities(video: any) {
+    const keys = Object.keys(video);
+    const qualityRegex = /^video_(\d+p)$/;
+    this.availableQualities = keys
+      .filter((key) => qualityRegex.test(key) && video[key])
+      .map((key) => key.match(qualityRegex)![1])
+      .sort((a, b) => parseInt(a) - parseInt(b));
+  }
+
+  /**
+   * Sets the video quality based on the given quality and updates the video source.
+   *
+   * If the given quality is 'auto', it sets the video quality based on the network
+   * speed, fetches the video data, and updates the video source. If the given quality
+   * is not 'auto', it tries to find the video URL in the video data and updates the
+   * video source if it exists. In both cases, it reloads the video element and sets
+   * the playback state to paused.
+   *
+   * @param quality The desired video quality, either a valid video quality string
+   * (e.g. 1080p, 720p, 480p, 360p, 240p, 144p) or 'auto' to set the video quality
+   * based on the network speed.
+   */
+  setQuality(quality: string) {
+    if (quality === this.videoQuality) return;
+    const videoElement: HTMLVideoElement = document.getElementById('my-video') as HTMLVideoElement;
+    if (quality === 'auto') {
+      this.videoQuality = this.networkService.getNetworkSpeed();
+      this.setVideoSrc();
+    } else {
+      const videoUrl = this.videoData[`video_${quality}`];
+      if (videoUrl) {
+        this.videoSrc = videoUrl;
+      }
+    }
+    if (videoElement) videoElement.load();
+    this.isPlaying = false;
   }
 
   /**
@@ -582,8 +635,9 @@ export class VideoPlayerComponent {
    *
    * @returns {void}
    */
-  toggleDropdown() {
-    this.dropdownVisible = !this.dropdownVisible;
+  toggleDropdown(dropdown: string) {
+    if (dropdown === 'quality') this.qualityDropdownVisible = !this.qualityDropdownVisible;
+    if (dropdown === 'speed') this.dropdownVisible = !this.dropdownVisible;
   }
 
   /**

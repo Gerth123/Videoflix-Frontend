@@ -297,11 +297,16 @@ app-header {
   }
 }
 
-@media (max-width: 350px) and (orientation: portrait) {
+@media (max-width: 390px) and (orientation: portrait) {
   .control-button {
     padding: 0.5rem 0.5rem;
   }
+}
 
+@media (max-width: 390px) and (orientation: portrait) {
+  .control-button {
+    padding: 0.25rem 0.25rem;
+  }
 }
 
 @media (pointer: coarse) and (orientation: landscape) {
