@@ -44,7 +44,7 @@ section {
   align-items: center;
   color: white;
   font-size: 1.5em;
-  z-index: 10;
+  z-index: 999;
 }
 
 .loading-spinner {
@@ -131,6 +131,7 @@ app-header {
 
 .controls {
   display: flex;
+  z-index: 997;
 }
 
 .controls:last-of-type {
@@ -262,7 +263,7 @@ app-header {
   width: 100px;
   display: flex;
   flex-direction: column;
-  z-index: 999;
+  z-index: 998;
 }
 
 .dropdown-option {

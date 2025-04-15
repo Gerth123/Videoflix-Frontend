@@ -509,6 +509,11 @@ export class VideoPlayerComponent {
    * @returns {void}
    */
   togglePlayPauseVideo() {
+    if (this.dropdownVisible || this.qualityDropdownVisible) {
+      this.dropdownVisible = false;
+      this.qualityDropdownVisible = false;
+      return;
+    }
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;
     if (this.loading) {
       console.log('Das Video wird noch geladen');
@@ -639,8 +644,13 @@ export class VideoPlayerComponent {
    * @returns {void}
    */
   toggleDropdown(dropdown: string) {
-    if (dropdown === 'quality') this.qualityDropdownVisible = !this.qualityDropdownVisible;
-    if (dropdown === 'speed') this.dropdownVisible = !this.dropdownVisible;
+    if (dropdown === 'quality') {
+      this.qualityDropdownVisible = !this.qualityDropdownVisible;
+      this.dropdownVisible = false;
+    } else if (dropdown === 'speed') {
+      this.dropdownVisible = !this.dropdownVisible;
+      this.qualityDropdownVisible = false;
+    }
   }
 
   /**

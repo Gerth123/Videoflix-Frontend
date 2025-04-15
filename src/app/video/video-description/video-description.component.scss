@@ -181,11 +181,4 @@ section {
       left: 28% !important;
     }
   }
-
-  @media (pointer: coarse) and (orientation: landscape) {
-    .description-container {
-      flex-direction: row !important;
-      align-items: center !important;
-    }
-  }
   
