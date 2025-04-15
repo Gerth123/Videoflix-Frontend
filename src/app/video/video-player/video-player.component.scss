@@ -262,6 +262,7 @@ app-header {
   width: 100px;
   display: flex;
   flex-direction: column;
+  z-index: 999;
 }
 
 .dropdown-option {

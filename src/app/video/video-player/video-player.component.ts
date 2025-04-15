@@ -22,6 +22,7 @@ export class VideoPlayerComponent {
   duration: number = 0;
   currentTime: number = 0;
   videoQuality: string = 'auto';
+  chosenQuality: string = 'auto';
   videoSrc: string = '';
   videoId: string = '';
   isMuted = false;
@@ -84,7 +85,7 @@ export class VideoPlayerComponent {
       if (this.videoQuality !== newQuality) {
         this.videoQuality = newQuality;
         this.toastService.show(`Netzwerkqualität geändert: ${newQuality}`, 'info');
-        this.setVideoSrc();
+        if (this.chosenQuality === 'auto') this.setVideoSrc();
       }
     };
     connection.addEventListener('change', this.connectionListener);
@@ -292,6 +293,7 @@ export class VideoPlayerComponent {
    * based on the network speed.
    */
   setQuality(quality: string) {
+    this.qualityDropdownVisible = false;
     if (quality === this.videoQuality) return;
     const videoElement: HTMLVideoElement = document.getElementById('my-video') as HTMLVideoElement;
     if (quality === 'auto') {
@@ -303,6 +305,7 @@ export class VideoPlayerComponent {
         this.videoSrc = videoUrl;
       }
     }
+    this.chosenQuality = quality;
     if (videoElement) videoElement.load();
     this.isPlaying = false;
   }
