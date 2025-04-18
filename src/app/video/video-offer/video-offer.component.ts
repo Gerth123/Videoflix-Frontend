@@ -24,7 +24,7 @@ export class VideoOfferComponent {
   bigThumbnailTitle: string = '';
   bigThumbnailDescription: string = '';
   isMobile: boolean = false;
-  public API_BASE_URL: string = 'http://127.0.0.1:8000';
+  public API_BASE_URL: string = 'http://34.65.107.197';
 
   constructor(
     public apiService: ApiService,

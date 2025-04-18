@@ -29,7 +29,7 @@ class MockToastService {
 
 class MockRoutingService {
   getPoster() {
-    return 'http://127.0.0.1:8000/media/thumbnails/19.jpg';
+    return 'http://34.65.107.197/media/thumbnails/19.jpg';
   }
 }
 
@@ -93,7 +93,7 @@ describe('VideoPlayerComponent', () => {
 
   it('should initialize with the correct poster image', () => {
     expect(component.poster).toBe(
-      'http://127.0.0.1:8000/media/thumbnails/19.jpg'
+      'http://34.65.107.197/media/thumbnails/19.jpg'
     );
   });
 

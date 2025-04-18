@@ -33,7 +33,7 @@ export class VideoPlayerComponent {
   qualityDropdownVisible: boolean = false;
   private connectionListener: any;
   loading: boolean = true;
-  poster = 'http://127.0.0.1:8000/media/thumbnails/19.jpg';
+  poster = 'http://34.65.107.197/media/thumbnails/19.jpg';
   isFullscreen: boolean = false;
   isControlsVisible: boolean = true;
   timeout: any;

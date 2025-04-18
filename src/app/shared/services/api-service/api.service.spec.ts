@@ -55,7 +55,7 @@ describe('ApiService', () => {
       expect(data).toEqual(testData);
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/test/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/test/');
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Token test-token');
     req.flush(testData);
@@ -68,7 +68,7 @@ describe('ApiService', () => {
       expect(res).toEqual(testData);
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/test/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/test/');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({ foo: 'bar' });
     req.flush(testData);
@@ -81,7 +81,7 @@ describe('ApiService', () => {
     ];
 
     const promise = service.checkEmailExists('test@example.com');
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/profiles/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/profiles/');
     req.flush(mockProfiles);
 
     const result = await promise;
@@ -98,7 +98,7 @@ describe('ApiService', () => {
       expect(res).toEqual({ success: true });
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/upload/');
+    const req = httpMock.expectOne('http://34.65.107.197/api/upload/');
     expect(req.request.method).toBe('POST');
     expect(req.request.headers.get('Authorization')).toBe('Token token123');
     req.flush({ success: true });
@@ -112,7 +112,7 @@ describe('ApiService', () => {
       expect(res).toEqual({ done: true });
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/json-endpoint/');
+    const req = httpMock.expectOne('http://34.65.107.197/api/json-endpoint/');
     expect(req.request.method).toBe('POST');
     expect(req.request.headers.get('Authorization')).toBe('Token json-token');
     expect(req.request.headers.get('Content-Type')).toBe('application/json');
@@ -128,7 +128,7 @@ describe('ApiService', () => {
       expect(res).toEqual({ updated: true });
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/update-json/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/update-json/');
     expect(req.request.method).toBe('PATCH');
     expect(req.request.headers.get('Authorization')).toBe('Token patch-token');
     expect(req.request.headers.get('Content-Type')).toBe('application/json');
@@ -146,7 +146,7 @@ describe('ApiService', () => {
       expect(res).toEqual({ patched: true });
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/update-form/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/update-form/');
     expect(req.request.method).toBe('PATCH');
     expect(req.request.headers.get('Authorization')).toBe('Token patch-token');
     req.flush({ patched: true });
@@ -159,7 +159,7 @@ describe('ApiService', () => {
       expect(res).toEqual({ deleted: true });
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/remove/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/remove/');
     expect(req.request.method).toBe('DELETE');
     expect(req.request.headers.get('Authorization')).toBe('Token delete-token');
     req.flush({ deleted: true });
@@ -173,7 +173,7 @@ describe('ApiService', () => {
       expect(genres).toEqual(genresMock);
     });
 
-    const req = httpMock.expectOne('http://127.0.0.1:8000/api/genres/');
+    const req = httpMock.expectOne('http://http://34.65.107.197/api/genres/');
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Token genre-token');
     req.flush(genresMock);

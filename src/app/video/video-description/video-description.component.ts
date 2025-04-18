@@ -13,7 +13,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class VideoDescriptionComponent {
   public loading: boolean = true;
-  public API_BASE_URL: string = 'http://127.0.0.1:8000';
+  public API_BASE_URL: string = 'http://34.65.107.197';
   public bigThumbnailUrl: string = '';
   public bigThumbnailTitle: string = '';
   public bigThumbnailDescription: string = '';
