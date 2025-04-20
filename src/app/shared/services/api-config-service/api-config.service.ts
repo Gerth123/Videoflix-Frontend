@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 export class ApiConfigService {
   // readonly API_BASE_URL = 'http://127.0.0.1:8000/api/';
   // readonly STATIC_BASE_URL = 'http://127.0.0.1:8000/';
-  readonly STATIC_BASE_URL = 'http://34.65.107.197/';
-  readonly API_BASE_URL = 'http://34.65.107.197/api/';
+  readonly STATIC_BASE_URL = 'https://videoflix.robin-gerth.de/';
+  readonly API_BASE_URL = 'https://videoflix.robin-gerth.de/api/';
   readonly LOGIN_URL = 'login/';
   readonly REGISTER_URL = 'registration/';
   readonly PROFILE_URL = 'profile/';

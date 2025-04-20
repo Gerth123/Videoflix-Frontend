@@ -13,7 +13,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class VideoDescriptionComponent {
   public loading: boolean = true;
-  public API_BASE_URL: string = 'http://34.65.107.197';
+  public API_BASE_URL: string = 'https://videoflix.robin-gerth.de/';
   public bigThumbnailUrl: string = '';
   public bigThumbnailTitle: string = '';
   public bigThumbnailDescription: string = '';

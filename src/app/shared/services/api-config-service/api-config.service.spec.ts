@@ -16,15 +16,15 @@ describe('ApiConfigService', () => {
   it('should return full API URL with given endpoint', () => {
     const endpoint = 'profile/';
     const fullUrl = service.getFullUrl(endpoint);
-    expect(fullUrl).toBe('http://http://34.65.107.197/api/profile/');
+    expect(fullUrl).toBe('https://videoflix.robin-gerth.de/api/profile/');
   });
 
   it('should have correct API base URL', () => {
-    expect(service.API_BASE_URL).toBe('http://http://34.65.107.197/api/');
+    expect(service.API_BASE_URL).toBe('https://videoflix.robin-gerth.de/api/');
   });
 
   it('should have correct static base URL', () => {
-    expect(service.STATIC_BASE_URL).toBe('http://http://34.65.107.197/');
+    expect(service.STATIC_BASE_URL).toBe('https://videoflix.robin-gerth.de/');
   });
 
   it('should have correct PAGE_SIZE', () => {

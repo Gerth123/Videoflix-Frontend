@@ -24,7 +24,7 @@ export class VideoOfferComponent {
   bigThumbnailTitle: string = '';
   bigThumbnailDescription: string = '';
   isMobile: boolean = false;
-  public API_BASE_URL: string = 'http://34.65.107.197';
+  public API_BASE_URL: string = 'https://videoflix.robin-gerth.de/';
 
   constructor(
     public apiService: ApiService,
